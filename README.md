@@ -22,13 +22,13 @@ Note that you can't use the same email account for >1 account. So you should pro
 ## 2. Set up a pubmed search
 
 1. Go here: http://www.ncbi.nlm.nih.gov/pubmed/
-2. Type in your favourite search terms (this example: 'phylogenetics') 
+2. Type in your favourite search terms (this example: 'phylogenetics phylogenomics') 
 3. Click 'search'
 4. Click the "RSS" link (with the orange symbol) just below the search box
 5. Set "Number of items to be displayed" to 100
 6. Click "Create RSS"
 7. Click the orange "XML" box
-8. Record the address in your browser's address bar (this example: http://www.ncbi.nlm.nih.gov/entrez/eutils/erss.cgi?rss_guid=1RwSy84-6Ztx-cjsbc5ygEM3zSejVgQDtW5VAzoBORwDmmrca4)
+8. Record the address in your browser's address bar (this example: http://www.ncbi.nlm.nih.gov/entrez/eutils/erss.cgi?rss_guid=1LU7YBGfC-yDnaYBUcYLivlvzqhgKnWemjak5n2h7PxDtGFoHp)
 
 ## 3. Set up your dlvr.it account
 
@@ -60,6 +60,16 @@ That's it. Your new twitterbot is running.
 
 ### Making things easier for people to ignore
 It might be an idea to put a short prefix onto each different feed. On phy_papers I'm experimenting with adding prefixes before preprints to let people know what servers they're from, e.g. "arxiv" for those from arxiv. This might be helpful because typically arxiv papers are more math oriented than other papers, which will affect peoples interest (in both directions!). To do this, just edit your sources in dlvr.it (hover over the source and click the pencil).
+
+Also, it's interesting to consider what settings might work best for your sources in dlvr.it: how often to collect data, and how often and how many tweets to post at a time. You don't want to obliterate your followers feeds with new papers, and in general twitter works best with lots of small amount of information spread over the day (note that your followers could be in any timezone). So my best guess is that these settings are sensible:
+
+Feed update period: every 30 minutes
+Max items per post: 5
+Max items per day: 250 (that's the maximum)
+Trickle: Oldest first
+
+These settings should trickle new papers in to people's feeds relatively effectively. One additional consideration - if you have a lot of sources, it would be a good idea to offset their updates.
+
 
 If you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
