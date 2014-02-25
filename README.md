@@ -61,7 +61,8 @@ That's it. Your new twitterbot is running.
 ### Making things easier for people to ignore
 It might be an idea to put a short prefix onto each different feed. On phy_papers I'm experimenting with adding prefixes before preprints to let people know what servers they're from, e.g. "arxiv" for those from arxiv. This might be helpful because typically arxiv papers are more math oriented than other papers, which will affect peoples interest (in both directions!). To do this, just edit your sources in dlvr.it (hover over the source and click the pencil).
 
-Also, it's interesting to consider what settings might work best for your sources in dlvr.it: how often to collect data, and how often and how many tweets to post at a time. You don't want to obliterate your followers feeds with new papers, and in general twitter works best with lots of small amount of information spread over the day (note that your followers could be in any timezone). So my best guess is that these settings are sensible:
+### Update frequency
+It's interesting to consider what settings might work best for your sources in dlvr.it: how often to collect data, and how often and how many tweets to post at a time. You don't want to obliterate your followers feeds with new papers, and in general twitter works best with lots of small amount of information spread over the day (note that your followers could be in any timezone). So my best guess is that these settings are sensible:
 
 Feed update period: every 30 minutes
 Max items per post: 5
