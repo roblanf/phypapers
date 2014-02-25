@@ -56,9 +56,10 @@ That's it. Your new twitterbot is running.
 8. In the dropdown menu, click the "All items" option.
 9. Click 'Save source'
 
-## 5. Last things
+## A few thoughts
 
-It might be an idea to put a short prefix onto each different feed. On phy_papers I'm experimenting with adding "PMC: " before articles from pubmed central, and "arxiv" for those from arxiv. This can be done by editing your sources in dlvr.it (hover over the source and click the pencil to do this).
+### Making things easier for people to ignore
+It might be an idea to put a short prefix onto each different feed. On phy_papers I'm experimenting with adding prefixes before preprints to let people know what servers they're from, e.g. "arxiv" for those from arxiv. This might be helpful because typically arxiv papers are more math oriented than other papers, which will affect peoples interest (in both directions!). To do this, just edit your sources in dlvr.it (hover over the source and click the pencil).
 
 If you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
