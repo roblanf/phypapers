@@ -41,38 +41,39 @@ Note that you can't use the same email account for >1 account. So you should pro
 7. Click OK
 8. For "Step 2" Click the Twitter button, and authorise dlvr.it to post to your new twitter account.
 
-That's it. Your new twitterbot is running.
+That's it. Your new twitterbot is running. Give it a bit of time (a day or two perhaps) to catch up with itself before you tell everyone about it - it will take a while to post all the articles it finds on pubmed to start with. This is nice, because then when you do tell people about your project, they will see the kind of papers it posts.
 
 ## 4. Adding a feed from arxiv preprints
 
 1. Edit this URL to include your search term: 'http://export.arxiv.org/api/query?search_query=all:[YOURSEARCHTERMHERE]&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending', e.g. for this example: 'http://export.arxiv.org/api/query?search_query=all:phylogenetics&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending'
 2. Log into dlvr.it
-3. Under 'Routes' your dlvr.it route which posts to your twitter account will be listed. It might be called 'my new route' if you didn't rename it. Click on that. 
+3. Under 'Routes' click your twitterbot. It might be called 'my new route' if you didn't rename it. 
 4. In the 'Sources' box, click the '+add' rectangle
 5. Click the square orange RSS symbol
 6. Click 'add feed'
 7. Paste the link from step 1 into the 'Feed URL' box
-8. In the dropdown menu, click the "All items" option.
+8. Set your other options as you see fit - some ideas are pasted below
 9. Click 'Save source'
 
 ## 5. Adding a feed from bioRxiv preprints
 
 This is a touch annoying, because you have to add each subject area separately. But it works.
 
-1. Go here: http://biorxiv.org/rss
-2. For each subject area you might find interesting papers in, do the following (I'll use Evolutionary Biology as an example)
-3. Click the link
-4. Copy the URL (this example: http://hwmaint.biorxiv.highwire.org/cgi/collection/rss?coll_alias=evolutionary_biology)
-5. Go to your dlvr.it account
-6. Under routes, click your twitterbot
-7. Click '+add', then the orange rss logo, then 'Add feed'
-8. Paste the URL into the box
-9. Choose your update settings (see below for ideas)
-10. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics')
-11. Click 'save source'
+1. For each subject area you might find interesting papers in, do the following (I'll use Evolutionary Biology as an example)
+2. Click the link for that subject area on http://biorxiv.org/rss
+3. Copy the URL (this example: http://hwmaint.biorxiv.highwire.org/cgi/collection/rss?coll_alias=evolutionary_biology)
+4. Follow steps 2 to 8 in the above instructions, pasting the biorxiv link into the URL box
+5. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics')
+6. Click 'save source'
 
 Now just repeat for all subject areas of interest. (But note that you are limited to a total of 5 sources on the free version of dlvr.it)
 
+## 6. Adding a feed from PeerJ PrePrints
+
+This is easier than bioRxiv, but very similar.
+
+1. Copy this link: https://peerj.com/preprints/index.rss2
+2. Follow steps 3-6 in section 5
 
 ## A few thoughts
 
