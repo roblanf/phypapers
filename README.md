@@ -1,4 +1,5 @@
-# How to make a twitterbot that shows papers on a particular topic
+# Making twitterbots to post academic papers
+##### using the building of https://twitter.com/phy_papers as an example
 
 There are lots of reasons you might want to keep up with the literature, and twitter feeds are a useful way to do it. Casey Bergman set up flypapers (https://twitter.com/fly_papers), which is a twitterbot that tweets links to any new papers on Drosophila. This has proven useful to lots of people. There's no reason we shouldn't all be doing this - nobody has to follow accounts they're not interested in, and there may be accounts (like Fly_papers) that lots of people find useful. Who knows.
 
