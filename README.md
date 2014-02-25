@@ -84,8 +84,11 @@ It might be an idea to put a short prefix onto each different feed. On phy_paper
 It's interesting to consider what settings might work best for your sources in dlvr.it: how often to collect data, and how often and how many tweets to post at a time. You don't want to obliterate your followers feeds with new papers, and in general twitter works best with lots of small amount of information spread over the day (note that your followers could be in any timezone). So my best guess is that these settings are sensible:
 
 Feed update period: every 30 minutes
+
 Max items per post: 5
+
 Max items per day: 250 (that's the maximum)
+
 Trickle: Oldest first
 
 These settings should trickle new papers in to people's feeds relatively effectively. One additional consideration - if you have a lot of sources, it would be a good idea to offset their updates.
