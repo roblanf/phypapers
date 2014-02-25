@@ -73,7 +73,9 @@ Now just repeat for all subject areas of interest. (But note that you are limite
 This is easier than bioRxiv, but very similar.
 
 1. Copy this link: https://peerj.com/preprints/index.rss2
-2. Follow steps 3-6 in section 5
+2. Follow steps 2 to 8 in section 4, above, pasting the above peerj link into the URL box
+3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics')
+4. Click 'save source'
 
 ## A few thoughts
 
