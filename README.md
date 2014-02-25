@@ -15,6 +15,7 @@ http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-lite
 2. Go here: https://twitter.com/
 3. Follow the links to set up your new account
 4. Sign in to your new account, and stay signed in until you're done with these instructions
+5. Suggested (but not required): click on the cog symbol at the top right of the twitter account and click 'settings'. Then on the left click 'Email notifications'. Un-tick every single box. If you don't, then you're liable to get flooded by emails every time even the most trivially dull thing happens to your new twitter account. Un-ticking everything really works - twitter won't email you about anything. 
  
 Note that you can't use the same email account for >1 account. So you should probably reserve your main email account for your own twitter account, and use a secondary email account to set up your twitterbot account.
 
