@@ -98,6 +98,14 @@ So here's my suggestion:
 
 These settings should trickle new papers in to people's without being disruptive, and do so over the course of the day (i.e. hitting all timezones). Using 'Newest first' means that on busy days with more than the 48 maximum number of papers (2*24*1) you'll start to build up a store of papers to trickle out on quieter days. 
 
+### Tweak, revise, repeat
+
+Last thing - make sure you follow your own feed, and if it seems like it's posting rubbish, go tweak the search terms. For example, I noticed that the search above, using 'phylogen*' in pubmed, gathers all sorts of papers that just happen to have estimated a phylogenetic tree. That's not what I want, since the focus of most of those papers is often nothing to do with phylogenetics. So I revised my searches to be more specific. I now use this:
+
+phylogenetics OR phylogenomics OR "phylogenetic analysis" OR "phylogenomic analysis" OR "phylogenetic analyses" OR "phylogenomic analyses" OR "phylogenetic methods" OR "phylogenomic methods" OR phyloinformatics OR "phyloinformatic analysis" OR "phyloinformatic analyses" OR "phyloinformatic methods" OR "phyloinformatic methods" 
+
+Long and unwieldy, but more precisely targeted to my interests, and less likely to fill mine and other people's streams with content we're not interested in. 
+
 If you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
 This is free to use and redistribute under a CC0 license.
