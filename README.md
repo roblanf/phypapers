@@ -22,7 +22,7 @@ Note that you can't use the same email account for >1 account. So you should pro
 ## 2. Set up a pubmed search
 
 1. Go here: http://www.ncbi.nlm.nih.gov/pubmed/
-2. Type in your favourite search terms (this example: 'phylogenetics phylogenomics') 
+2. Type in your favourite search terms (this example: 'phylogen*') 
 3. Click 'search'
 4. Click the "RSS" link (with the orange symbol) just below the search box
 5. Set "Number of items to be displayed" to 100
@@ -43,9 +43,11 @@ Note that you can't use the same email account for >1 account. So you should pro
 
 That's it. Your new twitterbot is running. Give it a bit of time (a day or two perhaps) to catch up with itself before you tell everyone about it - it will take a while to post all the articles it finds on pubmed to start with. This is nice, because then when you do tell people about your project, they will see the kind of papers it posts.
 
+For thoughts on other dlvr.it settings, see below.
+
 ## 4. Adding a feed from arxiv preprints
 
-1. Edit this URL to include your search term: 'http://export.arxiv.org/api/query?search_query=all:[YOURSEARCHTERMHERE]&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending', e.g. for this example: 'http://export.arxiv.org/api/query?search_query=all:phylogenetics&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending'
+1. Edit this URL to include your search term: 'http://export.arxiv.org/api/query?search_query=all:[YOURSEARCHTERMHERE]&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending', e.g. for this example: 'http://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending'
 2. Log into dlvr.it
 3. Under 'Routes' click your twitterbot. It might be called 'my new route' if you didn't rename it. 
 4. In the 'Sources' box, click the '+add' rectangle
@@ -63,7 +65,7 @@ This is a touch annoying, because you have to add each subject area separately. 
 2. Click the link for that subject area on http://biorxiv.org/rss
 3. Copy the URL (this example: http://hwmaint.biorxiv.highwire.org/cgi/collection/rss?coll_alias=evolutionary_biology)
 4. Follow steps 2 to 8 in the above instructions, pasting the biorxiv link into the URL box
-5. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics')
+5. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
 6. Click 'save source'
 
 Now just repeat for all subject areas of interest. (But note that you are limited to a total of 5 sources on the free version of dlvr.it)
@@ -74,7 +76,7 @@ This is easier than bioRxiv, but very similar.
 
 1. Copy this link: https://peerj.com/preprints/index.rss2
 2. Follow steps 2 to 8 in section 4, above, pasting the above peerj link into the URL box
-3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics')
+3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
 4. Click 'save source'
 
 ## A few thoughts
@@ -83,18 +85,18 @@ This is easier than bioRxiv, but very similar.
 It might be an idea to put a short prefix onto each different feed. On phy_papers I'm experimenting with adding prefixes before preprints to let people know what servers they're from, e.g. "arxiv" for those from arxiv. This might be helpful because typically arxiv papers are more math oriented than other papers, which will affect peoples interest (in both directions!). To do this, just edit your sources in dlvr.it (hover over the source and click the pencil).
 
 ### Update frequency
-It's interesting to consider what settings might work best for your sources in dlvr.it: how often to collect data, and how often and how many tweets to post at a time. You don't want to obliterate your followers feeds with new papers, and in general twitter works best with lots of small amount of information spread over the day (note that your followers could be in any timezone). So my best guess is that these settings are sensible:
+It's interesting to consider what settings might work best for your sources in dlvr.it: how often to collect data, and how often and how many tweets to post at a time. You don't want to obliterate your followers feeds with new papers, and in general twitter works best with frequent but small posts spread over the day (note that your followers could be in any timezone).
 
-Feed update period: every 30 minutes
+Here's my suggestion. PubMed is going to be your busiest feed, so let's look at that. First, go back to your search in pubmed. If it's a simple search, you'll be able to see a bar chart at top right, telling you how many papers per year you can expect. For 'phylogen*' there were up to about 14K papers each year for the last couple of years. That's up to about 40 papers per day. But there will be some variance in that, I imagine that there are peaks when a new issue of e.g. MPE is published. 
 
-Max items per post: 5
+So here's my suggestion:
 
-Max items per day: 250 (that's the maximum)
+  Feed update period: every 30 minutes  
+  Max items per post: 1  
+  Max items per day: 250  
+  Trickle: Newest first  
 
-Trickle: Oldest first
-
-These settings should trickle new papers in to people's feeds relatively effectively. One additional consideration - if you have a lot of sources, it would be a good idea to offset their updates.
-
+These settings should trickle new papers in to people's without being disruptive, and do so over the course of the day (i.e. hitting all timezones). Using 'Newest first' means that on busy days with more than the 48 maximum number of papers (2*24*1) you'll start to build up a store of papers to trickle out on quieter days. 
 
 If you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
