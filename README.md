@@ -58,17 +58,12 @@ For thoughts on other dlvr.it settings, see below.
 9. Click 'Save source'
 
 ## 5. Adding a feed from bioRxiv preprints
+N.B. Thanks to bioRxiv for making this easy - we contacted them on twitter and they were super helpful.
 
-This is a touch annoying, because you have to add each subject area separately. But it works.
-
-1. For each subject area you might find interesting papers in, do the following (I'll use Evolutionary Biology as an example)
-2. Click the link for that subject area on http://biorxiv.org/rss
-3. Copy the URL (this example: http://hwmaint.biorxiv.highwire.org/cgi/collection/rss?coll_alias=evolutionary_biology)
-4. Follow steps 2 to 8 in the above instructions, pasting the biorxiv link into the URL box
-5. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
-6. Click 'save source'
-
-Now just repeat for all subject areas of interest. (But note that you are limited to a total of 5 sources on the free version of dlvr.it)
+1. Copy this URL, which is an RSS feed from all of bioRxiv http://connect.biorxiv.org/biorxiv_xml.php?subject=all
+2. Follow steps 2 to 8 in the above instructions, pasting the biorxiv link into the URL box
+3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
+4. Click 'save source'
 
 ## 6. Adding a feed from PeerJ PrePrints
 
