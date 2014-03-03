@@ -1,11 +1,13 @@
-# Making twitterbots to post academic papers
+# Making Literature bots to keep up with academic subject areas
 ##### using the building of https://twitter.com/phy_papers as an example
 
-There are lots of reasons you might want to keep up with the literature, and twitter feeds are a useful way to do it. Casey Bergman set up flypapers (https://twitter.com/fly_papers), which is a twitterbot that tweets links to any new papers on Drosophila. This has proven useful to lots of people. There's no reason we shouldn't all be doing this - nobody has to follow accounts they're not interested in, and there may be accounts (like Fly_papers) that lots of people find useful. Who knows.
+These instructions tell you how to set up a literature bot that posts automatically to twitter and tumblr. 
 
-So, here are some very detailed instructions which, I hope, should mean that anyone can set up their own twitterbot to tweet papers on any given topic.
+There are lots of reasons you might want to keep up with the literature. Continuous feeds in twitter and tumblr are useful ways to do it. Casey Bergman set up flypapers (https://twitter.com/fly_papers), which is a twitterbot that tweets links to any new papers on Drosophila. This has proven useful to lots of people. There's no reason we shouldn't all be doing this - nobody has to follow accounts they're not interested in, and there may be accounts (like Fly_papers) that lots of people find useful. Who knows.
 
-These notes are based on Casey Bergman's blog post here:
+So, here are some very detailed instructions which, I hope, should mean that anyone can set up their own literature bot to tweet papers on any given topic.
+
+These notes are largely based on Casey Bergman's blog post here:
 
 http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/
 
@@ -73,6 +75,23 @@ This is easier than bioRxiv, but very similar.
 2. Follow steps 2 to 8 in section 4, above, pasting the above peerj link into the URL box
 3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
 4. Click 'save source'
+
+## 7. Post your feed to tumblr too.
+
+A few folks on twitter noted that it would be nice to have this feed posted to a non-twitter venue too. Tumblr is a good option here. So let's make dlvr.it post our newly minted literature bot to a tumblr account too.
+
+1. Set up a tumblr account here: www.tumblr.com
+2. Set the username and title to match your full name for twitter. In this case, I set both to 'PhyPapers'. So this particular tumblr account will be phypapers.tumblr.com.
+3. Go to your literature bot on dlvr.it
+4. Look for the 'Destinations' box, that right now just has your twitter account in it. Click '+add'.
+5. Click the 't' for tumblr, then 'connect to tumblr'
+6. In the popup window, click 'Allow'
+7. Choose the right blog. In this example, I select 'phypapers' from the drop-down menu, then click 'Select'
+8. In the window that's now open, click the 'Post content' tab.
+9. Click the 'post body' tick box (this will post abstracts too, which is fine on tumblr where there's enough space for them).
+10. Click 'save' in the bottom right.
+11. Now visit www.tumblr.com. Click the cog symbol at the top. Then on the right click 'Notifications'. Use the settings here to turn off all email notifactions from this blog (if you want). 
+
 
 ## A few thoughts
 
