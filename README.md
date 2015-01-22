@@ -1,84 +1,90 @@
-# Making Literature bots to keep up with academic subject areas
+# Build a twitter literature bot in three steps
 ##### using the building of https://twitter.com/phy_papers as an example
 
-These instructions tell you how to set up a literature bot that posts automatically to twitter and tumblr. 
+These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to twitter/tumblr.
 
-There are lots of reasons you might want to keep up with the literature. Continuous feeds in twitter and tumblr are useful ways to do it. Casey Bergman set up flypapers (https://twitter.com/fly_papers), which is a twitterbot that tweets links to any new papers on Drosophila. This has proven useful to lots of people. There's no reason we shouldn't all be doing this - nobody has to follow accounts they're not interested in, and there may be accounts (like Fly_papers) that lots of people find useful. Who knows.
+Turns out many people find these literature bots to be an extremely useful way to keep up with the latest research. Casey Bergman started it all with a Drosophila literature bot, and there are now getting on for 200 similar ones (many built with the instructions below). Most of them can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members
 
-So, here are some very detailed instructions which, I hope, should mean that anyone can set up their own literature bot to tweet papers on any given topic.
+So, here are some very detailed instructions which, I hope, should mean that anyone can set up their own literature bot to tweet papers on any given topic. These notes are largely based on Casey Bergman's blog post here: http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/
 
-These notes are largely based on Casey Bergman's blog post here:
+## The three basic steps
 
-http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/
+### 1. Set up a twitter account
 
-## 1. Set up a twitter account
-
-1. Decide on a name for your twitterbot. For consistency with the flypapers account, so that it's easier for acadmics to spot other 'papers' bots, I suggest we keep the same format: the "Full Name" should be something followed immediately by 'papers', and the username should be the same with an underscore between the two. E.g. 'flypapers' and 'fly_papers'. Or, for this example, 'phypapers' and 'phy_papers'.
+1. Decide on a name. A suggestion for consistency (following flypapers' lead):
+    * "Full Name": something followed immediately by 'papers' (e.g. flypapers, phypapers)
+    * "Username": the same as "Full Name" but with an underscore (e.g. fly_papers, phy_papers)
 2. Go here: https://twitter.com/
-3. Follow the links to set up your new account
+3. Follow the links to set up your new account:
+    * Protip 1: you don't necessarily need multiple email accounts. If you already use your gmail address for a personal twitter account, you can just append to it to create a new account. E.g. if your personal account is porcelain.crab@gmail.com, you could use porcelain.crab+phypapers@gmail.com (the '+' stays). I have 4 twitter accounts on the same email address like this.
+    * Protip 2: you have to churn through some frustrating steps when signing up. The final one looks like you're going to have to import all your contacts. Just look for the very small 'skip this step' link at the bottom right
 4. Sign in to your new account, and stay signed in until you're done with these instructions
-5. Suggested (but not required): click on the cog symbol at the top right of the twitter account and click 'settings'. Then on the left click 'Email notifications'. Un-tick every single box. If you don't, then you're liable to get flooded by emails every time even the most trivially dull thing happens to your new twitter account. Un-ticking everything really works - twitter won't email you about anything. 
- 
-Note that you can't use the same email account for >1 account. So you should probably reserve your main email account for your own twitter account, and use a secondary email account to set up your twitterbot account.
+5. Suggested: make sure email notifications are turned off
+    * Click on the egg symbol next to the "Tweet button" at the top right
+    * Click 'settings'.
+    * Click 'Email notifications'.
+    * If it says 'Email is enabled', click the 'Turn off' button
 
-## 2. Set up a pubmed search
+### 2. Set up a pubmed search
 
 1. Go here: http://www.ncbi.nlm.nih.gov/pubmed/
-2. Type in your favourite search terms (this example: 'phylogen*') 
-3. Click 'search'
+2. Type in your favourite search terms (e.g.: 'phylogen*', or 'goats')
+3. Click "search"
 4. Click the "RSS" link (with the orange symbol) just below the search box
 5. Set "Number of items to be displayed" to 100
 6. Click "Create RSS"
 7. Click the orange "XML" box
 8. Record the address in your browser's address bar (this example: http://www.ncbi.nlm.nih.gov/entrez/eutils/erss.cgi?rss_guid=1LU7YBGfC-yDnaYBUcYLivlvzqhgKnWemjak5n2h7PxDtGFoHp)
 
-## 3. Set up your dlvr.it account
+### 3. Set up your dlvr.it account
 
 1. Go here: http://dlvr.it/
-2. Follow the steps to sign up for a new account
-3. You will need to confirm your account by email
-4. Once your account is confirmed...
-5. In the 'Step 1: add your feed', post the RSS feed URL from step 8, above. 
-6. Choose the option "Post all items existing in feed now (up to maximum)."
-7. Click OK
-8. For "Step 2" Click the Twitter button, and authorise dlvr.it to post to your new twitter account.
+2. Follow the steps to sign up for a new account (NB: the same gmail trick that works for twitter works here too...)
+3. Click "Start feed"
+4. Paste the RSS feed URL (from step 8, above) into the "Source" box
+5. Choose Twitter as the destination, and authorise dlvr.it to post to your new twitter account
+6. Click 'Done'
+7. Now tweak the delivery settings:
+    * Hover over the content of the 'Sources' box, and click the pencil that appears
+    * Click the 'Feed Update' tab, my suggestions for settings are:
+        * Feed update period: 30 minutes
+        * Max items per update period: 1
+        * Max items per day: 250 (that's the maximum for a free account)
+        * Trickle: Newest items first
 
-That's it. Your new twitterbot is running. Give it a bit of time (a day or two perhaps) to catch up with itself before you tell everyone about it - it will take a while to post all the articles it finds on pubmed to start with. This is nice, because then when you do tell people about your project, they will see the kind of papers it posts.
+That's it. Your new twitterbot is running. Give it a bit of time (a day or two perhaps) to catch up with itself before you tell everyone about it. This lets it fill up with interesting papers, and also allows you to tweak the pubmed search if necessary.
 
-For thoughts on other dlvr.it settings, see below.
 
-## 4. Adding a feed from arxiv preprints
+# Going a bit further
+
+### 1. Adding a feed from arxiv preprints
 
 1. Edit this URL to include your search term: 'http://export.arxiv.org/api/query?search_query=all:[YOURSEARCHTERMHERE]&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending', e.g. for this example: 'http://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending'
 2. Log into dlvr.it
-3. Under 'Routes' click your twitterbot. It might be called 'my new route' if you didn't rename it. 
+3. Under 'Routes' click your twitterbot. It might be called 'my new route' if you didn't rename it.
 4. In the 'Sources' box, click the '+add' rectangle
 5. Click the square orange RSS symbol
 6. Click 'add feed'
 7. Paste the link from step 1 into the 'Feed URL' box
-8. Set your other options as you see fit - some ideas are pasted below
+8. Set your other options as in point 7 of the dlvr.it instructions, above
 9. Click 'Save source'
 
-## 5. Adding a feed from bioRxiv preprints
-N.B. Thanks to bioRxiv for making this easy - we contacted them on twitter and they were super helpful.
-
+### 2. Adding a feed from bioRxiv preprints
 1. Copy this URL, which is an RSS feed from all of bioRxiv http://connect.biorxiv.org/biorxiv_xml.php?subject=all
-2. Follow steps 2 to 8 in the above instructions, pasting the biorxiv link into the URL box
+2. Follow steps 2 to 8 in the arxiv instructions, pasting the biorxiv link into the URL box
 3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
 4. Click 'save source'
 
-## 6. Adding a feed from PeerJ PrePrints
-
-This is easier than bioRxiv, but very similar.
+### 3. Adding a feed from PeerJ PrePrints
 
 1. Copy this link: https://peerj.com/preprints/index.rss2
-2. Follow steps 2 to 8 in section 4, above, pasting the above peerj link into the URL box
+2. Follow steps 2 to 8 in the arxiv instructions, pasting the above peerj link into the URL box
 3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
 4. Click 'save source'
 
-## 7. Post your feed to tumblr too.
+### 7. Post your feed to tumblr
 
-A few folks on twitter noted that it would be nice to have this feed posted to a non-twitter venue too. Tumblr is a good option here. So let's make dlvr.it post our newly minted literature bot to a tumblr account too.
+A few folks on twitter noted that it would be nice to have this feed posted to a non-twitter venue too. Tumblr is a good option here. So let's make dlvr.it post our newly minted literature bot to a tumblr account too. I did this but found that almost no people ever looked at the tumblr, so I removed it. But here are the instructions if you care to use them.
 
 1. Set up a tumblr account here: www.tumblr.com
 2. Set the username and title to match your full name for twitter. In this case, I set both to 'PhyPapers'. So this particular tumblr account will be phypapers.tumblr.com.
@@ -90,35 +96,16 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
 8. In the window that's now open, click the 'Post content' tab.
 9. Click the 'post body' tick box (this will post abstracts too, which is fine on tumblr where there's enough space for them).
 10. Click 'save' in the bottom right.
-11. Now visit www.tumblr.com. Click the cog symbol at the top. Then on the right click 'Notifications'. Use the settings here to turn off all email notifactions from this blog (if you want). 
+11. Now visit www.tumblr.com. Click the cog symbol at the top. Then on the right click 'Notifications'. Use the settings here to turn off all email notifactions from this blog (if you want).
 
 
-## A few thoughts
+### 8. Tweak, revise, repeat
 
-### Making things easier for people to ignore
-It might be an idea to put a short prefix onto each different feed. On phy_papers I'm experimenting with adding prefixes before preprints to let people know what servers they're from, e.g. "arxiv" for those from arxiv. This might be helpful because typically arxiv papers are more math oriented than other papers, which will affect peoples interest (in both directions!). To do this, just edit your sources in dlvr.it (hover over the source and click the pencil).
+Make sure you follow and check your own feed. If it seems like it's posting rubbish, go tweak the search terms. For example, I noticed that the search above, using 'phylogen*' in pubmed, gathers all sorts of papers that just happen to have estimated a phylogenetic tree. That's not what I want, since the focus of most of those papers is often nothing to do with phylogenetics. So I revised my searches to be more specific. I now use this:
 
-### Update frequency
-It's interesting to consider what settings might work best for your sources in dlvr.it: how often to collect data, and how often and how many tweets to post at a time. You don't want to obliterate your followers feeds with new papers, and in general twitter works best with frequent but small posts spread over the day (note that your followers could be in any timezone).
+phylogenetics OR phylogenomics OR "phylogenetic analysis" OR "phylogenomic analysis" OR "phylogenetic analyses" OR "phylogenomic analyses" OR "phylogenetic methods" OR "phylogenomic methods" OR phyloinformatics OR "phyloinformatic analysis" OR "phyloinformatic analyses" OR "phyloinformatic methods" OR "phyloinformatic methods"
 
-Here's my suggestion. PubMed is going to be your busiest feed, so let's look at that. First, go back to your search in pubmed. If it's a simple search, you'll be able to see a bar chart at top right, telling you how many papers per year you can expect. For 'phylogen*' there were up to about 14K papers each year for the last couple of years. That's up to about 40 papers per day. But there will be some variance in that, I imagine that there are peaks when a new issue of e.g. MPE is published. 
-
-So here's my suggestion:
-
-  Feed update period: every 30 minutes  
-  Max items per post: 1  
-  Max items per day: 250  
-  Trickle: Newest first  
-
-These settings should trickle new papers in to people's without being disruptive, and do so over the course of the day (i.e. hitting all timezones). Using 'Newest first' means that on busy days with more than the 48 maximum number of papers (2*24*1) you'll start to build up a store of papers to trickle out on quieter days. 
-
-### Tweak, revise, repeat
-
-Last thing - make sure you follow your own feed, and if it seems like it's posting rubbish, go tweak the search terms. For example, I noticed that the search above, using 'phylogen*' in pubmed, gathers all sorts of papers that just happen to have estimated a phylogenetic tree. That's not what I want, since the focus of most of those papers is often nothing to do with phylogenetics. So I revised my searches to be more specific. I now use this:
-
-phylogenetics OR phylogenomics OR "phylogenetic analysis" OR "phylogenomic analysis" OR "phylogenetic analyses" OR "phylogenomic analyses" OR "phylogenetic methods" OR "phylogenomic methods" OR phyloinformatics OR "phyloinformatic analysis" OR "phyloinformatic analyses" OR "phyloinformatic methods" OR "phyloinformatic methods" 
-
-Long and unwieldy, but more precisely targeted to my interests, and less likely to fill mine and other people's streams with content we're not interested in. 
+Long and unwieldy, but more precisely targeted to my interests, and less likely to fill mine and other people's streams with content we're not interested in.
 
 If you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
