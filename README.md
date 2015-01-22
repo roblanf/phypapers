@@ -1,11 +1,9 @@
 # Build a twitter literature bot in three steps
-##### using the building of https://twitter.com/phy_papers as an example
+These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to twitter/tumblr. We'll use the building of https://twitter.com/phy_papers as an example. It takes about 20 minutes.
 
-These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to twitter/tumblr.
+Literature bots can be an extremely useful way to keep up with the latest research. Casey Bergman started it all with a Drosophila literature bot called flypapers, and there are now getting on for 200 similar ones (many built with the instructions below). Most of them can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members
 
-Turns out many people find these literature bots to be an extremely useful way to keep up with the latest research. Casey Bergman started it all with a Drosophila literature bot, and there are now getting on for 200 similar ones (many built with the instructions below). Most of them can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members
-
-So, here are some very detailed instructions which, I hope, should mean that anyone can set up their own literature bot to tweet papers on any given topic. These notes are largely based on Casey Bergman's blog post here: http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/
+Here are some very detailed instructions to make your own literature bot. These notes are inspired by Casey Bergman's blog post here: http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/
 
 ## The three basic steps
 
