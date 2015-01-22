@@ -80,7 +80,7 @@ That's it. Your new twitterbot is running. Give it a bit of time (a day or two p
 3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
 4. Click 'save source'
 
-### 7. Post your feed to tumblr
+### 4. Post your feed to tumblr
 
 A few folks on twitter noted that it would be nice to have this feed posted to a non-twitter venue too. Tumblr is a good option here. So let's make dlvr.it post our newly minted literature bot to a tumblr account too. I did this but found that almost no people ever looked at the tumblr, so I removed it. But here are the instructions if you care to use them.
 
@@ -97,7 +97,7 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
 11. Now visit www.tumblr.com. Click the cog symbol at the top. Then on the right click 'Notifications'. Use the settings here to turn off all email notifactions from this blog (if you want).
 
 
-### 8. Tweak, revise, repeat
+### 5. Tweak, revise, repeat
 
 Make sure you follow and check your own feed. If it seems like it's posting rubbish, go tweak the search terms. For example, I noticed that the search above, using 'phylogen*' in pubmed, gathers all sorts of papers that just happen to have estimated a phylogenetic tree. That's not what I want, since the focus of most of those papers is often nothing to do with phylogenetics. So I revised my searches to be more specific. I now use this:
 
