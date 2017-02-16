@@ -38,19 +38,24 @@ Here are some very detailed instructions to make your own literature bot. These 
 
 1. Go here: http://dlvr.it/
 2. Follow the steps to sign up for a new account (NB: the same gmail trick that works for twitter works here too...)
-3. Click "Start feed"
-4. Paste the RSS feed URL (from step 8, above) into the "Source" box
-5. Choose Twitter as the destination, and authorise dlvr.it to post to your new twitter account
+3. Paste the RSS feed URL (from step 8, above) into the "Find a Feed" box
+4. Click '+' symbol for the feed, it will appear just below the search box
+5. Click 'Next: Connect Socials', then select the 'Connect New' and click the Twitter icon and follow the steps authorise dlvr.it to post to your new twitter account
 6. Click 'Done'
 7. Now tweak the delivery settings:
-    * Hover over the content of the 'Sources' box, and click the pencil that appears
+    * In your dlvr.it homepage, click your new route (mine's called 'phypapers')
+    * In the 'Feeds' box, click on the cog symbol next to your pubmed feed
     * Click the 'Feed Update' tab, my suggestions for settings are:
         * Feed update period: 30 minutes
         * Max items per update period: 1
         * Max items per day: 250 (that's the maximum for a free account)
         * Trickle: Newest items first
+        * Subscribe to PuSH Updates: off (this stops it posting big PubMed logos with every post)
+    * Click 'Save' in the bottom right
 
 That's it. Your new twitterbot is running. Give it a bit of time (a day or two perhaps) to catch up with itself before you tell everyone about it. This lets it fill up with interesting papers, and also allows you to tweak the pubmed search if necessary.
+
+When you're done, please tweet to me (@roblanfear) and Casey Bergman (@caseybergman) with the name of your new twitterbot. It's nice to see what people are buliding, and Casey keeps a list of all the bots that we know of here: https://twitter.com/caseybergman/lists/literaturebots. 
 
 
 # Going a bit further
@@ -59,13 +64,13 @@ That's it. Your new twitterbot is running. Give it a bit of time (a day or two p
 
 1. Edit this URL to include your search term: 'http://export.arxiv.org/api/query?search_query=all:[YOURSEARCHTERMHERE]&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending', e.g. for this example: 'http://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending'
 2. Log into dlvr.it
-3. Under 'Routes' click your twitterbot. It might be called 'my new route' if you didn't rename it.
-4. In the 'Sources' box, click the '+add' rectangle
-5. Click the square orange RSS symbol
-6. Click 'add feed'
-7. Paste the link from step 1 into the 'Feed URL' box
+3. Look for your feed (mine is called 'phy_papers'), and click it to expand the list of feeds
+4. Click the 'Add Feed' grey text, just at the top right of the list of current feeds
+5. Add the URL to the search box
+6. Click '+' symbol for the feed, it will appear just below the search box
+7. Your feed will appear in a 'Selected Feed' box. Click the cog symbol at the right.
 8. Set your other options as in point 7 of the dlvr.it instructions, above
-9. Click 'Save source'
+9. Click the blue 'Save' rectangle in the bottom right
 
 ### 2. Adding a feed from bioRxiv preprints
 1. Copy this URL, which is an RSS feed from all of bioRxiv http://connect.biorxiv.org/biorxiv_xml.php?subject=all
@@ -80,7 +85,15 @@ That's it. Your new twitterbot is running. Give it a bit of time (a day or two p
 3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
 4. Click 'save source'
 
-### 4. Post your feed to tumblr
+### 4. Adding a feed from F1000 Research
+
+1. Copy this link: https://f1000research.com/published/rss
+2. Follow steps 2 to 8 in the arxiv instructions, pasting the above F1000 link into the URL box
+3. Under the 'Filters' tab, add your search terms (this example: 'phylogenetics, phylogenomics' and a few related terms)
+4. Click 'save source'
+
+
+### 5. Post your feed to tumblr
 
 A few folks on twitter noted that it would be nice to have this feed posted to a non-twitter venue too. Tumblr is a good option here. So let's make dlvr.it post our newly minted literature bot to a tumblr account too. I did this but found that almost no people ever looked at the tumblr, so I removed it. But here are the instructions if you care to use them.
 
@@ -97,7 +110,7 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
 11. Now visit www.tumblr.com. Click the cog symbol at the top. Then on the right click 'Notifications'. Use the settings here to turn off all email notifactions from this blog (if you want).
 
 
-### 5. Tweak, revise, repeat
+### 6. Tweak, revise, repeat
 
 Make sure you follow and check your own feed. If it seems like it's posting rubbish, go tweak the search terms. For example, I noticed that the search above, using 'phylogen*' in pubmed, gathers all sorts of papers that just happen to have estimated a phylogenetic tree. That's not what I want, since the focus of most of those papers is often nothing to do with phylogenetics. So I revised my searches to be more specific. I now use this:
 
