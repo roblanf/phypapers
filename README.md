@@ -120,10 +120,11 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
    * Twitter
    * Notification (optional)
 ![](./screenshots/msf_01_connections.png) 
-5. Go to 'My flows' and import `TrickleRSSfeedstoTwitter.zip`
+5. Go to 'My flows' and import `TrickleRSSfeedstoTwitter.zip`. The imported flow has the following components:
+![](./screenshots/msf_00_workflow_overview.png) 
 6. Edit the the imported flow:
    * Correct the RSS address (default is the porcelain.crab feed)
-   * Correct the bot name in "Send me an email notification"
+   * Correct the Flow name (will automatically be used in the subject line of the notification)
 
 #### Step-by-step flow creation
 
@@ -136,7 +137,7 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
 ![](./screenshots/msf_02_list_rss_items_expression.png)
 7. Optional: Select the 'Send me an email notification' action from the Notification connector
 ![](./screenshots/msf_03_send_notification_expression.png)
-   * Set the Subject to `Twitterbot: [bot name]: Number of items: @{length(body('List_all_RSS_feed_items'))}` or something equally meaningful
+   * Set the Subject to `@{workflow()['tags']['flowDisplayName']}: Number of items: @{length(body('List_all_RSS_feed_items'))}` or something equally meaningful
    * Set the body to `Feed check at @{utcNow()}` or something else
    * Add a parallel branch
 9.  Add the `Apply to each` connector
