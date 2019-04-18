@@ -109,8 +109,44 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
 10. Click 'save' in the bottom right.
 11. Now visit www.tumblr.com. Click the cog symbol at the top. Then on the right click 'Notifications'. Use the settings here to turn off all email notifactions from this blog (if you want).
 
+### 6. Tweet using Microsoft Flow
 
-### 6. Tweak, revise, repeat
+
+1. Download `ms_flows/TrickleRSSfeedstoTwitter.zip`
+2. Go here: https://flow.microsoft.com
+3. Follow the steps to sign up for a new account (NB: the same gmail trick that works for twitter *does not* work here)
+4. Create connectors:
+   * RSS
+   * Twitter
+   * Notification (optional)
+![](./screenshots/msf_01_connections.png) 
+5. Go to 'My flows' and import `TrickleRSSfeedstoTwitter.zip`
+6. Edit the the imported flow:
+   * Correct the RSS address (default is the porcelain.crab feed)
+   * Correct the bot name in "Send me an email notification"
+
+#### Step-by-step flow creation
+
+1. Create new flow from blank
+2. Select 'Schedule' connector
+3. Set interval to 12 hours
+4. Select the connector 'List all RSS feed items'
+5. Add the feed URL
+6. Set the 'since' value to `@{addHours(utcNow(), -12)}` to get the feed items since last update
+![](./screenshots/msf_02_list_rss_items_expression.png)
+7. Optional: Select the 'Send me an email notification' action from the Notification connector
+![](./screenshots/msf_03_send_notification_expression.png)
+   * Set the Subject to `Twitterbot: [bot name]: Number of items: @{length(body('List_all_RSS_feed_items'))}` or something equally meaningful
+   * Set the body to `Feed check at @{utcNow()}` or something else
+   * Add a parallel branch
+9.  Add the `Apply to each` connector
+10. Add 'Body' as the 'Select an output from previous steps' value
+![](./screenshots/msf_04_send_tweets.png)
+1.  Add the 'Delay' action from the Schedule connector and set Count and Unit to 5 Minutes. With this delay all feed items (max 100) are tweeted in a little more than 8 hours
+2.  Set the 'Post a Tweet' action from the Twitter connector
+3.  Set the tweet text. `Feed title | Primary feed link` makes sense
+
+### 7. Tweak, revise, repeat
 
 Make sure you follow and check your own feed. If it seems like it's posting rubbish, go tweak the search terms. For example, I noticed that the search above, using 'phylogen*' in pubmed, gathers all sorts of papers that just happen to have estimated a phylogenetic tree. That's not what I want, since the focus of most of those papers is often nothing to do with phylogenetics. So I revised my searches to be more specific. I now use this:
 
