@@ -150,7 +150,7 @@ Clearly some of the following steps, such as the truncation of the paper title a
 1.  Add a 'Set variable' action from the 'Variables' connector, followed by a 'Condition' action from the 'Control' connector
 2.  Set the the value of `item_title` to `Feed title`
 3.  Set the condition to be length of `item_title > 253` 
-    * The maximum number of characters in a tweet is 280, the URL will always be 23 characters, we will truncate long titles and add `... ` to long titles; so 280 - 23 - 4 = 253
+    * The maximum number of characters in a tweet is 280, the URL will always be 23 characters, we will truncate long titles and add `... `; so 280 - 23 - 4 = 253
     * The length of `item_title` is obtained through `@{length(variables('item_title'))}`
 4.  To the True branch, add a 'Set variable' action from the 'Variables' connector
 5.  Set the the value of `tweet_text` to `@{substring(variables('item_title'), 0, 253)}... Primary feed link`
