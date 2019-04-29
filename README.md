@@ -109,8 +109,69 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
 10. Click 'save' in the bottom right.
 11. Now visit www.tumblr.com. Click the cog symbol at the top. Then on the right click 'Notifications'. Use the settings here to turn off all email notifactions from this blog (if you want).
 
+### 6. Tweet using Microsoft Flow
 
-### 6. Tweak, revise, repeat
+
+1. Download `ms_flows/TrickleRSSfeedstoTwitter.zip`
+2. Go here: https://flow.microsoft.com
+3. Follow the steps to sign up for a new account (NB: the same gmail trick that works for twitter *does not* work here)
+4. Create connectors:
+   * RSS
+   * Twitter
+   * Notification (optional)
+![](./screenshots/msf_00_connections.png) 
+5. Go to 'My flows' and import `TrickleRSSfeedstoTwitter.zip`. The imported flow has the following components:
+![](./screenshots/msf_01_workflow_overview.png) 
+6. Edit the the imported flow:
+   1. Correct the RSS address (default is the porcelain.crab feed)
+   2. Correct the Flow name (will automatically be used in the subject line of the notification)
+
+#### Step-by-step flow creation
+
+Clearly some of the following steps, such as the truncation of the paper title and the try/catch, can be left out. I use them to be on the safe side of things, but you can go wild.
+
+1. Create new flow from blank
+2. Select 'Schedule' connector
+3. Set the interval to 24 hours
+4. Select the connector 'List all RSS feed items'
+5. Add the feed URL
+6. Initialize two string variables
+![](./screenshots/msf_02_workflow_initial_steps.png)
+   *  `item_title`
+   *  `tweet_text`
+7. Optional: Select the 'Send me an email notification' action from the Notification connector
+![](./screenshots/msf_03_send_notification_expression.png)
+   * Set the Subject to `@{workflow()['tags']['flowDisplayName']}: Number of items: @{length(body('List_all_RSS_feed_items'))}` or something equally meaningful
+   * Set the body to `Feed check at @{utcNow()}` or something else
+   * Add a parallel branch
+8. Add the `Apply to each` connector
+9. Add 'Body' as the 'Select an output from previous steps' value
+![](./screenshots/msf_04_truncate_title.png)
+10.  Add a 'Set variable' action from the 'Variables' connector, followed by a 'Condition' action from the 'Control' connector
+11.  Set the the value of `item_title` to `Feed title`
+12.  Set the condition to be length of `item_title > 253` 
+    * The maximum number of characters in a tweet is 280, the URL will always be 23 characters, we will truncate long titles and add `... `; so 280 - 23 - 4 = 253
+    * The length of `item_title` is obtained through `@{length(variables('item_title'))}`
+13.  To the True branch, add a 'Set variable' action from the 'Variables' connector
+14.  Set the the value of `tweet_text` to `@{substring(variables('item_title'), 0, 253)}... Primary feed link`
+![](./screenshots/msf_05a_set_tweet_text_truncated.png)
+15.  To the False branch, add a 'Set variable' action from the 'Variables' connector
+16.  Set the the value of `tweet_text` to `variables('item_title') Primary feed link` or `Feed title Primary feed link`
+![](./screenshots/msf_05b_set_tweet_text.png)
+17. Create a Try/Catch block to avoid a flood of errors in case the flow executes without any new RSS items:
+    1. Add a two `Scope` actions from the 'Control' connector
+    2. Set the letter to run only in case of failure:
+       1. Go to the ellipsis, select 'Configure run after', leave only 'has failed' checked
+![](./screenshots/msf_06_create_try_catch.png)
+18. In the Try block, set the 'Post a Tweet' action from the Twitter connector
+![](./screenshots/msf_07_post_tweet.png)
+19. Set the tweet text to `@{variables('item_title')`
+20. Add the 'Delay' action from the Schedule connector and set Count and Unit to 5 Minutes. With this delay all feed items (max 100) are tweeted in a little more than 8 hours
+21. In the Catch block, set the 'Send me an email notification' action from the Notification connector
+![](./screenshots/msf_08_notify_duplicate_tweets.png)
+22. Fill in the information you find reasonable - the name of the flow is given by the expression `workflow()['tags']['flowDisplayName']`
+
+### 7. Tweak, revise, repeat
 
 Make sure you follow and check your own feed. If it seems like it's posting rubbish, go tweak the search terms. For example, I noticed that the search above, using 'phylogen*' in pubmed, gathers all sorts of papers that just happen to have estimated a phylogenetic tree. That's not what I want, since the focus of most of those papers is often nothing to do with phylogenetics. So I revised my searches to be more specific. I now use this:
 
