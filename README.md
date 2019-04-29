@@ -156,7 +156,7 @@ Clearly some of the following steps, such as the truncation of the paper title a
 5.  Set the the value of `tweet_text` to `@{substring(variables('item_title'), 0, 253)}... Primary feed link`
 ![](./screenshots/msf_05a_set_tweet_text_truncated.png)
 15. To the False branch, add a 'Set variable' action from the 'Variables' connector
-16. Set the the value of `tweet_text` to `variables('item_title') Primary feed link`
+16. Set the the value of `tweet_text` to `variables('item_title') Primary feed link` or `Feed title Primary feed link`
 ![](./screenshots/msf_05b_set_tweet_text.png)
 17. Create a Try/Catch block to avoid a flood of errors in case the flow executes without any new RSS items:
     1. Add a two `Scope` actions from the 'Control' connector
