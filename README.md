@@ -169,7 +169,7 @@ Clearly some of the following steps, such as the truncation of the paper title a
 21. Add the 'Delay' action from the Schedule connector and set Count and Unit to 5 Minutes. With this delay all feed items (max 100) are tweeted in a little more than 8 hours
 22. In the Catch block, set the 'Send me an email notification' action from the Notification connector
 ![](./screenshots/msf_08_notify_duplicate_tweets.png)
-23. Fill in the information you find reasonable 
+23. Fill in the information you find reasonable - the name of the flow is given by the expression `workflow()['tags']['flowDisplayName']`
 
 ### 7. Tweak, revise, repeat
 
