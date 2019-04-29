@@ -147,16 +147,16 @@ Clearly some of the following steps, such as the truncation of the paper title a
 8. Add the `Apply to each` connector
 9. Add 'Body' as the 'Select an output from previous steps' value
 ![](./screenshots/msf_04_truncate_title.png)
-1.  Add a 'Set variable' action from the 'Variables' connector, followed by a 'Condition' action from the 'Control' connector
-2.  Set the the value of `item_title` to `Feed title`
-3.  Set the condition to be length of `item_title > 253` 
-    * The maximum number of characters in a tweet is 280, the URL will always be 23 characters, we will truncate long titles and add `... ` to long titles; so 280 - 23 - 4 = 253
+10.  Add a 'Set variable' action from the 'Variables' connector, followed by a 'Condition' action from the 'Control' connector
+11.  Set the the value of `item_title` to `Feed title`
+12.  Set the condition to be length of `item_title > 253` 
+    * The maximum number of characters in a tweet is 280, the URL will always be 23 characters, we will truncate long titles and add `... `; so 280 - 23 - 4 = 253
     * The length of `item_title` is obtained through `@{length(variables('item_title'))}`
-4.  To the True branch, add a 'Set variable' action from the 'Variables' connector
-5.  Set the the value of `tweet_text` to `@{substring(variables('item_title'), 0, 253)}... Primary feed link`
+13.  To the True branch, add a 'Set variable' action from the 'Variables' connector
+14.  Set the the value of `tweet_text` to `@{substring(variables('item_title'), 0, 253)}... Primary feed link`
 ![](./screenshots/msf_05a_set_tweet_text_truncated.png)
 15. To the False branch, add a 'Set variable' action from the 'Variables' connector
-16. Set the the value of `tweet_text` to `variables('item_title') Primary feed link`
+16. Set the the value of `tweet_text` to `variables('item_title') Primary feed link` or `Feed title Primary feed link`
 ![](./screenshots/msf_05b_set_tweet_text.png)
 17. Create a Try/Catch block to avoid a flood of errors in case the flow executes without any new RSS items:
     1. Add a two `Scope` actions from the 'Control' connector
@@ -165,11 +165,11 @@ Clearly some of the following steps, such as the truncation of the paper title a
 ![](./screenshots/msf_06_create_try_catch.png)
 18. In the Try block, set the 'Post a Tweet' action from the Twitter connector
 ![](./screenshots/msf_07_post_tweet.png)
-20. Set the tweet text to `@{variables('item_title')`
-21. Add the 'Delay' action from the Schedule connector and set Count and Unit to 5 Minutes. With this delay all feed items (max 100) are tweeted in a little more than 8 hours
-22. In the Catch block, set the 'Send me an email notification' action from the Notification connector
+19. Set the tweet text to `@{variables('item_title')`
+20. Add the 'Delay' action from the Schedule connector and set Count and Unit to 5 Minutes. With this delay all feed items (max 100) are tweeted in a little more than 8 hours
+21. In the Catch block, set the 'Send me an email notification' action from the Notification connector
 ![](./screenshots/msf_08_notify_duplicate_tweets.png)
-23. Fill in the information you find reasonable - the name of the flow is given by the expression `workflow()['tags']['flowDisplayName']`
+22. Fill in the information you find reasonable - the name of the flow is given by the expression `workflow()['tags']['flowDisplayName']`
 
 ### 7. Tweak, revise, repeat
 
