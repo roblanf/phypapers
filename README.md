@@ -167,7 +167,31 @@ Especially adjusting the title length might be a little too much, since about [0
 21. In the Catch block, set the 'Send me an email notification' action from the Notification connector <br>![](./screenshots/msf_08_notify_duplicate_tweets.png)
 22. Fill in the information you find reasonable - the name of the flow is given by the expression `workflow()['tags']['flowDisplayName']`
 
-#### Check duplicate tweets
+#### Check feed repetition
+
+Microsoft Flow provide no way to store information between execution of flows; the work around is to use Google Sheets, Excel Online, or some other cloud based spread sheet. By assuming that a change to the title of the first feed item indicate a completely new feed, we just need to remember a single entry, and not each paper tweeted. Here the usage of Google Sheets will be described, but the ideas will also apply to other cloud spread sheets.
+
+The template `TrickleRSSfeedstoTwitter_no_repeats.zip` is available for download in `ms_flows`.
+
+1. Create a file on Google Sheets called `RSS item titles` and insert the following
+
+    | `__PowerAppsId__` | `TwitterBot` |
+    | ----------------- | ------------ |
+    | 1                 | NA           |
+
+    The column `__PowerAppsId__` is used my Microsoft Flow to identify the row of interest.
+
+1. Create a connection to the 'Google Sheets' connector
+2. Initialize a string variable `first feed title`, and set the variable after the RSS feed has been listed with the expression `body('List_all_RSS_feed_items')?[0]?['title']`. <br>![](./screenshots/msf_09_check_repeats_vars.png)
+3. Insert the 'Get Rows' action from the 'Google Sheets' connector
+   * Select the file and sheet, and no other options. <br> ![](./screenshots/msf_10_get_rows.png)
+4. Add a 'Condition' action and test equality between `first feed title` (the first paper of the feed) and the value stored in the sheet obtained with the expression `body('get_rows')?['value']?[0]?['TwitterBot']`<br>![](./screenshots/msf_11_test_repated_feed.png)
+5. If the title is unknown
+   1. Update the information in the Google Sheet<br>![](./screenshots/msf_12_remember_feed_and_tweet.png)
+      *  Insert the 'Update Row' action from the 'Google Sheets' connector
+      *  Select the file, sheet, and set the row ID to 1
+      *  Set the option TwitterBot to `first feed title`
+   2. Add the `Apply to each` connector and continue as above
 
 ### 7. Tweak, revise, repeat
 
