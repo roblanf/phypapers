@@ -112,19 +112,21 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
 ### 6. Tweet using Microsoft Flow
 
 
-1. Download `ms_flows/TrickleRSSfeedstoTwitter.zip`
+1. Download `ms_flows/TrickleRSSfeedstoTwitter.zip` or `TrickleRSSfeedstoTwitter_w_notification.zip` if you want automatic notifications
 2. Go here: https://flow.microsoft.com
 3. Follow the steps to sign up for a new account (NB: the same gmail trick that works for twitter *does not* work here)
-4. Create connectors:
+4. Go to Data -> Connections and create connectors:
    * RSS
    * Twitter
    * Notification (optional)
 ![](./screenshots/msf_00_connections.png) 
-5. Go to 'My flows' and import `TrickleRSSfeedstoTwitter.zip`. The imported flow has the following components:
+1. Go to 'My flows' and import `TrickleRSSfeedstoTwitter.zip`. The imported flow has the following components:
 ![](./screenshots/msf_01_workflow_overview.png) 
 6. Edit the the imported flow:
    1. Correct the RSS address (default is the porcelain.crab feed)
    2. Correct the Flow name (will automatically be used in the subject line of the notification)
+
+The 
 
 #### Step-by-step flow creation
 
