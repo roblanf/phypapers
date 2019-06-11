@@ -126,7 +126,9 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
    1. Correct the RSS address (default is the porcelain.crab feed)
    2. Correct the Flow name (will automatically be used in the subject line of the notification)
 
-The 
+The flow will tweet the items in the RSS feed each and every day - also if there is nothing new under the sun. Why this is, is a little obscure, but Microsoft Flow clearly does not check if the feed has been updated, but this might also be because NCBI does not include a `<pubDate>` tag in the feed. Also, you can obviously tweet the exact same text on different days.
+
+If it is important not to tweet the same paper over and over, look at **Check duplicate tweets**.
 
 #### Step-by-step flow creation
 
@@ -172,6 +174,8 @@ Clearly some of the following steps, such as the truncation of the paper title a
 21. In the Catch block, set the 'Send me an email notification' action from the Notification connector
 ![](./screenshots/msf_08_notify_duplicate_tweets.png)
 22. Fill in the information you find reasonable - the name of the flow is given by the expression `workflow()['tags']['flowDisplayName']`
+
+#### Check duplicate tweets
 
 ### 7. Tweak, revise, repeat
 
