@@ -118,10 +118,8 @@ A few folks on twitter noted that it would be nice to have this feed posted to a
 4. Go to Data -> Connections and create connectors:
    * RSS
    * Twitter
-   * Notification (optional)
-![](./screenshots/msf_00_connections.png) 
-1. Go to 'My flows' and import `TrickleRSSfeedstoTwitter.zip`. The imported flow has the following components:
-![](./screenshots/msf_01_workflow_overview.png) 
+   * Notification (optional) <br>![](./screenshots/msf_00_connections.png) 
+1. Go to 'My flows' and import `TrickleRSSfeedstoTwitter.zip`. The imported flow has the following components: <br>![](./screenshots/msf_01_workflow_overview.png) 
 6. Edit the the imported flow:
    1. Correct the RSS address (default is the porcelain.crab feed)
    2. Correct the Flow name (will automatically be used in the subject line of the notification)
@@ -141,40 +139,32 @@ Especially adjusting the title length might be a little too much, since about [0
 3. Set the interval to 24 hours
 4. Select the connector 'List all RSS feed items'
 5. Add the feed URL
-6. Initialize two string variables
-![](./screenshots/msf_02_workflow_initial_steps.png)
+6. Initialize two string variables <br>![](./screenshots/msf_02_workflow_initial_steps.png)
    *  `item_title`
    *  `tweet_text`
-7. Optional: Select the 'Send me an email notification' action from the Notification connector
-![](./screenshots/msf_03_send_notification_expression.png)
+7. Optional: Select the 'Send me an email notification' action from the Notification connector <br>![](./screenshots/msf_03_send_notification_expression.png)
    * Set the Subject to `@{workflow()['tags']['flowDisplayName']}: Number of items: @{length(body('List_all_RSS_feed_items'))}` or something equally meaningful
    * Set the body to `Feed check at @{utcNow()}` or something else
    * Add a parallel branch
 8. Add the `Apply to each` connector
-9. Add 'Body' as the 'Select an output from previous steps' value
-![](./screenshots/msf_04_truncate_title.png)
+9.  Add 'Body' as the 'Select an output from previous steps' value <br>![](./screenshots/msf_04_truncate_title.png)
 10.  Add a 'Set variable' action from the 'Variables' connector, followed by a 'Condition' action from the 'Control' connector
 11.  Set the the value of `item_title` to `Feed title`
 12.  Set the condition to be length of `item_title > 253` 
     * The maximum number of characters in a tweet is 280, the URL will always be 23 characters, we will truncate long titles and add `... `; so 280 - 23 - 4 = 253
     * The length of `item_title` is obtained through `@{length(variables('item_title'))}`
 13.  To the True branch, add a 'Set variable' action from the 'Variables' connector
-14.  Set the the value of `tweet_text` to `@{substring(variables('item_title'), 0, 253)}... Primary feed link`
-![](./screenshots/msf_05a_set_tweet_text_truncated.png)
+14.  Set the the value of `tweet_text` to `@{substring(variables('item_title'), 0, 253)}... Primary feed link` <br>![](./screenshots/msf_05a_set_tweet_text_truncated.png)
 15.  To the False branch, add a 'Set variable' action from the 'Variables' connector
-16.  Set the the value of `tweet_text` to `variables('item_title') Primary feed link` or `Feed title Primary feed link`
-![](./screenshots/msf_05b_set_tweet_text.png)
+16.  Set the the value of `tweet_text` to `variables('item_title') Primary feed link` or `Feed title Primary feed link` <br>![](./screenshots/msf_05b_set_tweet_text.png)
 17. Create a Try/Catch block to avoid a flood of errors in case the flow executes without any new RSS items:
     1. Add a two `Scope` actions from the 'Control' connector
     2. Set the letter to run only in case of failure:
-       1. Go to the ellipsis, select 'Configure run after', leave only 'has failed' checked
-![](./screenshots/msf_06_create_try_catch.png)
-18. In the Try block, set the 'Post a Tweet' action from the Twitter connector
-![](./screenshots/msf_07_post_tweet.png)
+       1. Go to the ellipsis, select 'Configure run after', leave only 'has failed' checked <br>![](./screenshots/msf_06_create_try_catch.png)
+18. In the Try block, set the 'Post a Tweet' action from the Twitter connector <br>![](./screenshots/msf_07_post_tweet.png)
 19. Set the tweet text to `@{variables('item_title')`
 20. Add the 'Delay' action from the Schedule connector and set Count and Unit to 5 Minutes. With this delay all feed items (max 100) are tweeted in a little more than 8 hours
-21. In the Catch block, set the 'Send me an email notification' action from the Notification connector
-![](./screenshots/msf_08_notify_duplicate_tweets.png)
+21. In the Catch block, set the 'Send me an email notification' action from the Notification connector <br>![](./screenshots/msf_08_notify_duplicate_tweets.png)
 22. Fill in the information you find reasonable - the name of the flow is given by the expression `workflow()['tags']['flowDisplayName']`
 
 #### Check duplicate tweets
