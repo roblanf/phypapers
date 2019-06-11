@@ -134,6 +134,8 @@ If it is important not to tweet the same paper over and over, look at **Check du
 
 Clearly some of the following steps, such as the truncation of the paper title and the try/catch, can be left out. I use them to be on the safe side of things, but you can go wild.
 
+Especially adjusting the title length might be a little too much, since about [0.25% of the new coming papers on Pubmed](https://rubde-my.sharepoint.com/:x:/g/personal/ulrik_stervbo_rub_de/EdYocDyvmn9Km1DLBaPkEOcBapeM1Cy9f4UgYgSwFxEC0A?e=JgEFvx) have to be truncated.
+
 1. Create new flow from blank
 2. Select 'Schedule' connector
 3. Set the interval to 24 hours
