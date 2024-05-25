@@ -36,11 +36,12 @@ Literature bots use [RSS feeds](https://en.wikipedia.org/wiki/RSS) to post paper
 2. Type in your favourite search terms remembering that wildcards are useful (e.g. `phylogen*` will match anything starting with `phylogen`, and logical operators can be really good, e.g. you can have `phylogen* OR raxml OR splitstree`.
 3. Click `search`
 4. Click the `Create RSS` link just below the search box
-5. Set "Number of items to be displayed" to 100
-6. Click `Create RSS`
-7. Record the RSS URL somewhere
+5. Name is something sensible
+6. Set `Number of items to be displayed` to 100
+7. Click `Create RSS`
+8. Record the RSS URL somewhere
 
-> NB I recommend leaving the name of the RSS feed for this as-is. This is because it's the only way I know of to look up in the future what the search terms actually were, which is crucial for tweaking your RSS feeds if they are not quite doing what you want
+> NB I recommend writing down somewhere what your search terms were in case you want to tweak them later. I don't know a reliable way of getting them back if you only have the RSS link. Even if you leave the name as the search terms, it gets truncated after not all that much text.
 
 
 #### 2.2 arXiv preprints
@@ -119,9 +120,9 @@ Now you can tweak how dlvr.it makes your feeds look on Bluesky. To do this:
 
 That's it. My best advice now is to make sure you follow and check your own feed. If it seems like it's posting rubbish, go tweak the search terms. For example, I noticed that the search above, using 'phylogen*' in pubmed gathers all sorts of papers that just happen to have estimated a phylogenetic tree. That's not what I want, since the focus of most of those papers is often nothing to do with phylogenetics. So I revised my searches to be more specific. I now use this:
 
-`phylogenetics OR phylogenomics OR "phylogenetic analysis" OR "phylogenomic analysis" OR "phylogenetic analyses" OR "phylogenomic analyses" OR "phylogenetic methods" OR "phylogenomic methods" OR phyloinformatics OR "phyloinformatic analysis" OR "phyloinformatic analyses" OR "phyloinformatic methods" OR "phyloinformatic methods"`
+`phylogenetics OR phylogenomics OR "phylogenetic tree" OR "phylogenetic network" OR "ancestral recombination graph" OR "phylogenetic analysis" OR "phylogenomic analysis" OR "phylogenetic analyses" OR "phylogenomic analyses" OR "phylogenetic methods" OR "phylogenomic methods" OR raxml OR raxml-ng OR IQ-TREE OR IQ-TREE2 OR IQTREE OR IQTREE2 OR mrbayes OR revbayes OR matoptimize OR decenttree OR svdquartets OR splitstree OR phylonet OR decenttree OR (phylogen* AND (BEAST OR tree OR network))`
 
-Long and unwieldy, but more precisely targeted to my interests, and less likely to fill mine and other people's streams with content we're not interested in.
+Long, unwieldy, and probably a lot of redundnacy (who would use raxml but not mention anything about phylogenetics?) but more precisely targeted to my interests, and less likely to fill mine and other people's streams with content we're not interested in.
 
 If you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
