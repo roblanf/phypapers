@@ -1,63 +1,82 @@
 # Build a literature bot in three steps
 These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to Bluesky. 
 
-We'll use the building of [the phypapers bot on Bluesky](https://bsky.app/profile/phypapers.bsky.social) as an example. It takes about 20 minutes.
+We'll use the building of [https://bsky.app/profile/phypapers.bsky.social](the phypapers bot on Bluesky) as an example. It takes about 20 minutes.
 
 Literature bots can be a useful way to keep up with the latest research. Casey Bergman started it all with a Drosophila literature bot called flypapers back when Twitter existed. There are now hundreds similar ones, many built with the instructions below and many of which can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members. The detailed instructions here were originally inspired by [Casey Bergman's blog post](http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/). 
 
-> This is a new set of instructions which I've cleaned up substantially, and streamlined for BlueSky. If you're looking for the old instructions, which had notes for Twitter, Tumblr, and things for using Microsoft Flow etc. you can find them here: https://github.com/roblanf/phypapers/tree/v1-twitter.
+This repo has some very detailed instructions to make your own literature bot. 
+
+> This is a new set of instructions which I've cleaned up substantially, and streamlined for BlueSky. If you're looking for the old instructions, which had notes for Twitter, Tumblr, and things for using Microsoft Flow etc. you can find them [here](https://github.com/roblanf/phypapers/tree/v1-twitter)
 
 ## The three basic steps
 
-### 1. Set up a twitter account
+### 1. Set up a Bluesky account
 
-1. Decide on a name. A suggestion for consistency (following flypapers' lead):
-    * "Full Name": something followed immediately by 'papers' (e.g. flypapers, phypapers)
-    * "Username": the same as "Full Name" but with an underscore (e.g. fly_papers, phy_papers)
-2. Go here: https://twitter.com/
-3. Follow the links to set up your new account:
-    * Protip 1: you don't necessarily need multiple email accounts. If you already use your gmail address for a personal twitter account, you can just append to it to create a new account. E.g. if your personal account is porcelain.crab@gmail.com, you could use porcelain.crab+phypapers@gmail.com (the '+' stays). I have 4 twitter accounts on the same email address like this.
-    * Protip 2: you have to churn through some frustrating steps when signing up. The final one looks like you're going to have to import all your contacts. Just look for the very small 'skip this step' link at the bottom right
-4. Sign in to your new account, and stay signed in until you're done with these instructions
-5. Suggested: make sure email notifications are turned off
-    * Click on the egg symbol next to the "Tweet button" at the top right
-    * Click 'settings'.
-    * Click 'Email notifications'.
-    * If it says 'Email is enabled', click the 'Turn off' button
+Obviously you need an account to post to. This part gets you set up on Bluesky, whether you have an existing personal account or not.
 
-### 2. Set up a pubmed search
+1. If you don't have a Bluesky account: Go to https://bsky.app/, and click 'Sign Up'
+2. If you do have a Bluesky account, log in then go to `Settings` and click `Add Account`
+3. Leave the hosting provider as Bluesky Social
+4. Fill out your details to set up your new account:
+    * Protip: If you already use your gmail address for your account, you can just append to it to create a new account. E.g. if your personal account is porcelain.crab@gmail.com, you could use porcelain.crab+phypapers@gmail.com (the '+' stays). This helps keep mail separate.
+5. Decide on a handle. Following flypapers' lead, I suggest a short prefix followed immediately by `papers`, e.g. `flypapers`, `phypapers`. This means we all know it when we see a literature bot.
+6. Click on your new profile, go to `Edit Profile`
+    * `Username`: I suggest making this `prefix_papers` e.g. `fly_papers` or `phy_papers`. As above, this helps everyone know what's a literature bot
+    * `Description`: pretty obvious, but it's always nice to know the human who runs it, so good to put your name there if you want to
+7. Go to `Settings` and scroll down to `App Passwords` and set one up (this is something which allows another service to post to Bluesky on your behalf)
 
-1. Go here: http://www.ncbi.nlm.nih.gov/pubmed/
-2. Type in your favourite search terms (e.g.: 'phylogen*', or 'goats')
-3. Click "search"
-4. Click the "RSS" link (with the orange symbol) just below the search box
+### 2. Set up your RSS feeds
+
+Literature bots use [RSS feeds](https://en.wikipedia.org/wiki/RSS) to post papers. The service we use below (dlvr.it) allows three free RSS feeds. You can use any RSS feed you like, but for the purposes of this tutorial I'll show you how to do the three big ones for what I do: pubmed, arxiv, and biorxiv. The general rule though is that you should establish up to three RSS feeds that cover as much of the literature as you possibly can for whatever your literature bot is for. 
+
+#### 2.1 Pubmed RSS feed
+
+1. Go here: [http://www.ncbi.nlm.nih.gov/pubmed/](http://www.ncbi.nlm.nih.gov/pubmed/)
+2. Type in your favourite search terms remembering that wildcards are useful (e.g. `phylogen*` will match anything starting with `phylogen`, and logical operators can be really good, e.g. you can have `phylogen* OR raxml OR splitstree`.
+3. Click `search`
+4. Click the `Create RSS` link just below the search box
 5. Set "Number of items to be displayed" to 100
-6. Click "Create RSS"
-7. Click the orange "XML" box
-8. Record the address in your browser's address bar (this example: http://www.ncbi.nlm.nih.gov/entrez/eutils/erss.cgi?rss_guid=1LU7YBGfC-yDnaYBUcYLivlvzqhgKnWemjak5n2h7PxDtGFoHp)
+6. Click `Create RSS`
+7. Record the RSS URL somewhere
+
+> NB I recommend leaving the name of the RSS feed for this as-is. This is because it's the only way I know of to look up in the future what the search terms actually were, which is crucial for tweaking your RSS feeds if they are not quite doing what you want
+
+
+#### 2.2 arXiv preprints
+
+arXiv has preprints for many subjects, so it's worth considering. Setting up the RSS feed is trivial:
+
+1. Edit this URL to include your search term: 'http://export.arxiv.org/api/query?search_query=all:[YOURSEARCHTERMHERE]&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending', e.g. for this example: 'http://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending'
+
+#### 2.3 bioRxiv preprints
+
+bioRxiv is also great for biology preprints. I don't know of a way to get an RSS feed with search terms in bioRxiv, but we can get ALL the preprints in an RSS, and filter them later using search terms in dlvr.it. So for bioRxiv we just use the following URL:
+
+[http://connect.biorxiv.org/biorxiv_xml.php?subject=all
+](http://connect.biorxiv.org/biorxiv_xml.php?subject=all
+)
 
 ### 3. Set up your dlvr.it account
 
-1. Go here: http://dlvr.it/
+1. Go here: [http://dlvr.it/](http://dlvr.it/)
 2. Follow the steps to sign up for a new account (NB: the same gmail trick that works for twitter works here too...)
-3. Paste the RSS feed URL (from step 8, above) into the "Find a Feed" box
+3. Paste the RSS feed URL for Pubmed (from step 7 in the pubmed section, above) into the "Find a Feed" box
 4. Click '+' symbol for the feed, it will appear just below the search box
-5. Click 'Next: Connect Socials', then select the 'Connect New' and click the Twitter icon and follow the steps authorise dlvr.it to post to your new twitter account
+5. Click 'Next: Connect Socials', then select the 'Connect New' and click the Bluesky butterly icon and follow the steps authorise dlvr.it to post to your Bluesky account (you'll need to put in the App password that you set up above)
 6. Click 'Done'
 7. Now tweak the delivery settings:
     * In your dlvr.it homepage, click your new route (mine's called 'phypapers')
     * In the 'Feeds' box, click on the cog symbol next to your pubmed feed
     * Click the 'Feed Update' tab, my suggestions for settings are:
-        * Feed update period: 30 minutes
-        * Max items per update period: 1
+        * Feed update period: 3 hours (that's the quickest you can get for free)
+        * Max items per update period: 10 (this is so you don't flood people's feeds with too many papers at once)
         * Max items per day: 250 (that's the maximum for a free account)
         * Trickle: Newest items first
         * Subscribe to PuSH Updates: off (this stops it posting big PubMed logos with every post)
     * Click 'Save' in the bottom right
 
-That's it. Your new twitterbot is running. Give it a bit of time (a day or two perhaps) to catch up with itself before you tell everyone about it. This lets it fill up with interesting papers, and also allows you to tweak the pubmed search if necessary.
 
-When you're done, please tweet to me (@roblanfear) and Casey Bergman (@caseybergman) with the name of your new twitterbot. It's nice to see what people are buliding, and Casey keeps a list of all the bots that we know of here: https://twitter.com/caseybergman/lists/literaturebots. 
 
 
 # Going a bit further
