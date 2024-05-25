@@ -111,8 +111,8 @@ Now you can tweak how dlvr.it makes your feeds look on Bluesky. To do this:
 1. In your dlvr.it homepage, click your new route (mine's called `phy_papers`)
 2. Click the cog to the right of your Bluesky account (the bottom box called something like `Sharing to 1 Social`)
 3. My suggestions for settings are:
-  * Post Style: Status Update (makes is clean plain text)
-  * What to post: I usually just choose the title and the URL. This keeps it short and sweet, and allows for rapid scrolling through papers
+   * Post Style: Status Update (makes is clean plain text)
+   * What to post: I usually just choose the title and the URL. This keeps it short and sweet, and allows for rapid scrolling through papers
 4. Slick `Save` at the bottom
 
 ### 4. Tweak, revise, repeat
