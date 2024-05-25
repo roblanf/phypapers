@@ -1,9 +1,13 @@
-# Build a twitter literature bot in three steps
-These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to twitter/tumblr. We'll use the building of https://twitter.com/phy_papers as an example. It takes about 20 minutes.
+# Build a literature bot in three steps
+These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to Bluesky. 
 
-Literature bots can be an extremely useful way to keep up with the latest research. Casey Bergman started it all with a Drosophila literature bot called flypapers, and there are now getting on for 200 similar ones (many built with the instructions below). Most of them can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members
+We'll use the building of [https://bsky.app/profile/phypapers.bsky.social](the phypapers bot on Bluesky) as an example. It takes about 20 minutes.
 
-Here are some very detailed instructions to make your own literature bot. These notes are inspired by Casey Bergman's blog post here: http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/
+Literature bots can be a useful way to keep up with the latest research. Casey Bergman started it all with a Drosophila literature bot called flypapers back when Twitter existed. There are now hundreds similar ones, many built with the instructions below and many of which can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members. The detailed instructions here were originally inspired by [Casey Bergman's blog post](http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/). 
+
+This repo has some very detailed instructions to make your own literature bot. 
+
+> This is a new set of instructions which I've cleaned up substantially, and streamlined for BlueSky. If you're looking for the old instructions, which had notes for Twitter, Tumblr, and things for using Microsoft Flow etc. you can find them here: https://github.com/roblanf/phypapers/tree/v1-twitter.
 
 ## The three basic steps
 
