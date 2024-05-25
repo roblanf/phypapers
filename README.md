@@ -1,7 +1,7 @@
 # Build a literature bot in three steps
 These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to Bluesky. 
 
-We'll use the building of [https://bsky.app/profile/phypapers.bsky.social](the phypapers bot on Bluesky) as an example. It takes about 20 minutes.
+We'll use the building of [the phypapers bot on Bluesky](https://bsky.app/profile/phypapers.bsky.social) as an example. It takes about 20 minutes.
 
 Literature bots can be a useful way to keep up with the latest research. Casey Bergman started it all with a Drosophila literature bot called flypapers back when Twitter existed. There are now hundreds similar ones, many built with the instructions below and many of which can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members. The detailed instructions here were originally inspired by [Casey Bergman's blog post](http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/). 
 
