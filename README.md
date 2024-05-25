@@ -23,7 +23,7 @@ Obviously you need an account to post to. This part gets you set up on Bluesky, 
 5. Decide on a handle. Following flypapers' lead, I suggest a short prefix followed immediately by `papers`, e.g. `flypapers`, `phypapers`. This means we all know it when we see a literature bot.
 6. Click on your new profile, go to `Edit Profile`
     * `Username`: I suggest making this `prefix_papers` e.g. `fly_papers` or `phy_papers`. As above, this helps everyone know what's a literature bot
-    * `Description`: pretty obvious, but it's always nice to know the human who runs it, so good to put your name there if you want to
+    * `Description`: pretty obvious, but it's always nice to know the human who runs it, so good to put your name there if you want to. It would be great if you could also put a link to these instructions on your literature bot - that way anyone who sees yours can also make their own. On my profile I just wrote: "Make your own literature bot with these instructions: https://github.com/roblanf/phypapers"
 7. Go to `Settings` and scroll down to `App Passwords` and set one up (this is something which allows another service to post to Bluesky on your behalf)
 
 ### 2. Set up your RSS feeds
@@ -126,3 +126,6 @@ Long, unwieldy, and probably a lot of redundnacy (who would use raxml but not me
 
 If you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
+### 5. Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via email, bluesky, github issues, or whatever. I'll make a list and post it here at some point.
