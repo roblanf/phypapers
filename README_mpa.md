@@ -16,7 +16,7 @@ Finally, we use PowerAutomate to post un-posted papers in a sensible way to a Bl
 2. Set up a blank Excel Workbook
 3. Make three columns:
   * `Title`
-  * `DOI`
+  * `Link`
   * `Posted`
 4. At the top left, name it `literature_bot`
 5. Select the three columns
