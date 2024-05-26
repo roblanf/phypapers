@@ -69,6 +69,7 @@ You'll notice that it gets put inside a "For Each" loop. This is expected.
    1. Inside the "Apply to each" action, click on "+" and "Add an Action."
    2. Search for "Compose" in the "Data Operation" category and select it.
    3. Configure the action:
+      - **Title:** Up the top where it says Compose, write `Extract title`
       - **Inputs:** Click in the box an click the blue 'fx'
       - Enter the following expression in the text box:
         ```plaintext
@@ -80,10 +81,31 @@ You'll notice that it gets put inside a "For Each" loop. This is expected.
    1. Inside the "Apply to each" action, click on "+" and "Add an Action."
    2. Search for "Compose" in the "Data Operation" category and select it.
    3. Configure the action:
+      - **Title:** Up the top where it says Compose, write `Extract Link`
       - **Inputs:** Click in the box an click the blue 'fx'
       - Enter the following expression in the text box:
         ```plaintext
         item()?['primaryLink']
         ```
       - Click "Add" to save the expression.
+
+### 7. Initialize a Variable to Track Duplicates
+
+1. **Initialize a Variable to Track Duplicates:**
+   1. In the flow, click on "+" and "Add an Action."
+   2. Search for "Variable" and select "Initialize variable."
+   3. Configure the action:
+      - **Name:** `DuplicateFound`
+      - **Type:** Boolean
+      - **Value:** `false`
+
+### 8. Check for Duplicate Links
+
+1. **Check for Duplicate Links:**
+   1. In the flow, click on "+" and "Add an Action."
+   2. Search for "Condition" and select it.
+   3. Configure the action:
+      - **Name:** `IsDuplicate`
+      - **First "Choose a Value":** choose the lightning bolt, scroll down to "List rows present in a table" and choose "Link" 
+      - **Second "Choose a Value":** choose the lightning bolt, and select the "outputs" from "Extract Link" 
 
