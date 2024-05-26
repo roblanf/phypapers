@@ -42,33 +42,24 @@ I hate power automate, and you may come to hate it too. Here we're going to make
    - **File:** Select the "literature_bot.xlsx" Excel file you created.
    - **Table:** Select the table (for me it's called "Table1")
 
-### 3. Add HTTP Action to Fetch RSS Feed
-1. Click on "New step."
-2. Search for "HTTP" and select "HTTP" action.
+### 3. Add RSS Action to Fetch RSS Feed
+1. In the flow, click on "+" and "Add an Action"
+2. Search for "RSS" and select "List all feed items."
 3. Configure the action:
-   - **Method:** GET
-   - **URI:** Enter the RSS feed URL.
+   - **Feed URL:** Enter the RSS feed URL, e.g. my pubmed search is `https://pubmed.ncbi.nlm.nih.gov/rss/search/1pSbSzklLaRDgrBBecLaHXjj_NtDB256CbB-lTk3MQA9gZRkc4/?limit=100&utm_campaign=pubmed-2&fc=20240525000654`
 
-### 4. Parse RSS Feed
-1. Click on "New step."
-2. Search for "XML" and select "XML - Parse XML."
-3. Configure the action:
-   - **Content:** Select the body from the HTTP request.
-   - **Schema:** Use a sample schema or leave it for now; we will adjust it later.
-
-### 5. Initialize Array Variable for New RSS Items
-1. Click on "New step."
+### 4. Initialize Array Variable for New RSS Items
+1. In the flow, click on "+" and "Add an Action"
 2. Search for "Variable" and select "Initialize variable."
 3. Configure the action:
-   - **Name:** NewRSSItems
+   - **Name:** `NewRSSItems`
    - **Type:** Array
 
-### 6. Apply to Each RSS Item
-1. Click on "New step."
-2. Search for "Control" and select "Apply to each."
+### 5. Process the RSS items
+1. In the flow, click on "+" and "Add an Action"
+2. Search for "Compose" in the "Data Operation" category and select it
 3. Configure the action:
-   - **Select an output from previous steps:** Select the parsed XML items.
+   - **Inputs:** Select `Item` from the "List all feed items" action.
 
-### 7. Check for Existing DOIs
-1. Inside the "Apply to each" action, add a "Con
+You'll notice that it gets put inside a "For Each" loop. This is expected.
 
