@@ -66,20 +66,24 @@ You'll notice that it gets put inside a "For Each" loop. This is expected.
 ### 6. Extract Title and Link from Each RSS Item
 
 1. **Extract Title:**
-   1. Inside the "For Each" loop, click on "+" and "Add an Action."
+   1. Inside the "Apply to each" action, click on "+" and "Add an Action."
    2. Search for "Compose" in the "Data Operation" category and select it.
    3. Configure the action:
-      - **Inputs:** Use the following expression to extract the title:
+      - **Inputs:** Click in the box an click the blue 'fx'
+      - Enter the following expression in the text box:
         ```plaintext
-        xpath(xml(outputs('Compose')), '//title/text()')
+        item()?['title']
         ```
-        
+      - Click "Add" to save the expression.
+
 2. **Extract Link:**
-   1. Inside the "For Each" loop, click on "+" and "Add an Action."
+   1. Inside the "Apply to each" action, click on "+" and "Add an Action."
    2. Search for "Compose" in the "Data Operation" category and select it.
    3. Configure the action:
-      - **Inputs:** Use the following expression to extract the link:
+      - **Inputs:** Click in the box an click the blue 'fx'
+      - Enter the following expression in the text box:
         ```plaintext
-        xpath(xml(outputs('Compose')), '//link/text()')
+        item()?['primaryLink']
         ```
+      - Click "Add" to save the expression.
 
