@@ -34,11 +34,51 @@ NEVERHTELESS Here we're going to make a 'Flow'. Take a deep breath...
 1. In the flow, click on "+" and "Add an Action."
 2. Search for "Filter array" and select it.
 3. Configure the action:
+   - **Name:** Call it `FilterArray`
    - **From:** Select `body` from the "List all feed items" action.
    - **Condition:**
       - In the left box, click the `fx` and paste this into the text box: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
-      - Choose `is greater or equal to` for the operator
+      - Choose `is greater or equal to` for the operator.
       - In the right box, click the `fx` and paste this into the text box: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
 
 OK, now we have our list of new things, and we can go ahead and post to Bluesky.
 
+### 4. Figure out how frequently we should post
+
+Let's aim to post everything we've got within 23 hours.
+
+1. Add a "Compose" action after filtering the RSS feed.
+   - **Name:** `PostCount`
+   - **Inputs:** click the blue `fx` and enter this in the text box: `length(body('FilterArray'))`
+2. Add a "Compose" action after getting the post count.
+   - **Name:** `MinutesBetweenPosts`
+   - **Inputs:** click the blue `fx` and enter this in the text box: `div(1380, outputs('PostCount'))`
+
+This will allow us to trickle out our posts over a ~23 hour period.
+
+### 5. Initialize Variables for Bluesky Credentials
+1. Add a "Initialize variable" action.
+   - **Name:** `BlueskyUsername` (e.g. `phypapers.bsky.social`)
+   - **Type:** String
+   - **Value:** Enter your Bluesky username.
+
+2. Add another "Initialize variable" action.
+   - **Name:** `BlueskyAPIPassword` (should be something with alphanumeric characters in the form `xxxx-xxxx-xxxx-xxxx`)
+   - **Type:** String
+   - **Value:** Enter your Bluesky API password.
+
+### 6. Loop Through and Post All Items
+1. Add an "Apply to each" action.
+   - **Value:** use the lightning bolt to select the FilterArray `body`
+   - **Name:** `PostToBluesky`
+
+2. Inside the "Apply to each" action, add a "Compose" action.
+   - **Name:** `CurrentPaper`
+   - **Inputs:** use the lightning bolt to select the PostToBluesky `Current Item`
+
+3. Add a delay between posts to ensure even distribution.
+   - Add a "Delay" action.
+   - **Count:** use the lightning bolt to select the MinutesBetweenPosts `Output`
+   - **Unit:** Minute
+
+This will create a loop to process each item and delay the posts evenly over 23 hours.
