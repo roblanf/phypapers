@@ -110,4 +110,14 @@ You'll notice that it gets put inside a "For Each" loop. This is expected.
       - **Name:** `IsDuplicate`
       - **First "Choose a Value":** choose the lightning bolt, scroll down to "List rows present in a table" and choose "Link" 
       - **Second "Choose a Value":** choose the lightning bolt, and select the "outputs" from "Extract Link" 
-
+   4. In the "True" branch of the condition:
+      1. Click on "+" and "Add an Action."
+      2. Search for "Variable" and select "Set variable."
+      3. Configure the action:
+         - **Name:** `DuplicateFound`
+         - **Value:** `true`
+      4. Add another action within the "True" branch:
+         - Click on "+" and "Add an Action."
+         - Search for "Terminate" and select it.
+         - Configure the action:
+            - **Status:** `Succeeded`
