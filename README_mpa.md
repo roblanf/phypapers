@@ -31,8 +31,6 @@ NEVERHTELESS Here we're going to make a 'Flow'. Take a deep breath...
    - **Feed URL:** Enter the RSS feed URL, e.g. my pubmed search is `https://pubmed.ncbi.nlm.nih.gov/rss/search/1pSbSzklLaRDgrBBecLaHXjj_NtDB256CbB-lTk3MQA9gZRkc4/?limit=100&utm_campaign=pubmed-2&fc=20240525000654`
 
 ### 3. Only keep papers added to the feed in the last 24 hours
-
-### 3. Apply the Date Filter
 1. In the flow, click on "+" and "Add an Action."
 2. Search for "Filter array" and select it.
 3. Configure the action:
