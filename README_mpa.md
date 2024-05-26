@@ -42,31 +42,48 @@ I hate power automate, and you may come to hate it too. Here we're going to make
    - **File:** Select the "literature_bot.xlsx" Excel file you created.
    - **Table:** Select the table (for me it's called "Table1")
 
-### 3. Add RSS Action to Fetch RSS Feed
+### 3. Initialise an Array of All Titles we already have
+1. In the flow, click on "+" and "Add an Action"
+2. Search for "Initialize variable" and select it.
+3. Configure the action:
+   - **Name:** `ExistingTitles`
+   - **Type:** Array
+   - **Value:** leave empty
+
+### 4. Fill the Array of All Titles we already have
+1. Click on "+" and "Add an Action."
+2. Search for "Apply to each" and select it.
+3. Configure the action:
+   - **Select an output from previous steps:** click the lightning bolt, then `value` from "List rows present in a table."
+4. Inside the loop, click on "+" and "Add an Action."
+5. Search for "Append to array variable" and select it.
+6. Configure the action:
+   - **Name:** `ExistingTitles`
+   - **Value:** click the lightning bolt, then choose `Title` from Excel rows.
+
+
+### 5. Add RSS Action to Fetch RSS Feed
 1. In the flow, click on "+" and "Add an Action"
 2. Search for "RSS" and select "List all feed items."
 3. Configure the action:
    - **Feed URL:** Enter the RSS feed URL, e.g. my pubmed search is `https://pubmed.ncbi.nlm.nih.gov/rss/search/1pSbSzklLaRDgrBBecLaHXjj_NtDB256CbB-lTk3MQA9gZRkc4/?limit=100&utm_campaign=pubmed-2&fc=20240525000654`
 
-### 4. Initialize Array Variable for New RSS Items
+### 6. Initialize Array Variable for New RSS Items
 1. In the flow, click on "+" and "Add an Action"
 2. Search for "Variable" and select "Initialize variable."
 3. Configure the action:
    - **Name:** `NewRSSItems`
    - **Type:** Array
 
-### 5. Initialize a Variable to Track Duplicates
+### 6. Initialize a Variable to Track Duplicates
+1. In the flow, click on "+" and "Add an Action."
+2. Search for "Variable" and select "Initialize variable."
+3. Configure the action:
+   - **Name:** `DuplicateFound`
+   - **Type:** Boolean
+   - **Value:** `false`
 
-1. **Initialize a Variable to Track Duplicates:**
-   1. In the flow, click on "+" and "Add an Action."
-   2. Search for "Variable" and select "Initialize variable."
-   3. Configure the action:
-      - **Name:** `DuplicateFound`
-      - **Type:** Boolean
-      - **Value:** `false`
-
-
-### 6. Process the RSS items
+### 7. Process the RSS items
 1. In the flow, click on "+" and "Add an Action"
 2. Search for "Compose" in the "Data Operation" category and select it
 3. Configure the action:
@@ -100,22 +117,21 @@ You'll notice that it gets put inside a "For Each" loop. This is expected.
         ```
       - Click "Add" to save the expression.
 
-
 ### 8. Check for Duplicate Links
 
-1. **Check for Duplicate Links:**
-   1. In the flow, click on "+" and "Add an Action."
-   2. Search for "Condition" and select it.
+1. In the flow, click on "+" and "Add an Action."
+2. Search for "Condition" and select it.
+3. Configure the action:
+   - **Name:** `IsDuplicate`
+   - **First "Choose a Value":** choose the lightning bolt, and choose "ExistingTitles"
+   - Select 'contains' as the logical operator 
+   - **Second "Choose a Value":** choose the lightning bolt, and select the "outputs" from "Extract Title" 
+4. In the "True" branch of the condition:
+   1. Click on "+" and "Add an Action."
+   2. Search for "Variable" and select "Set variable."
    3. Configure the action:
-      - **Name:** `IsDuplicate`
-      - **First "Choose a Value":** choose the lightning bolt, scroll down to "List rows present in a table" and choose "Title" 
-      - **Second "Choose a Value":** choose the lightning bolt, and select the "outputs" from "Extract Title" 
-   4. In the "True" branch of the condition:
-      1. Click on "+" and "Add an Action."
-      2. Search for "Variable" and select "Set variable."
-      3. Configure the action:
-         - **Name:** `DuplicateFound`
-         - **Value:** `true`
+      - **Name:** `DuplicateFound`
+      - **Value:** `true`
 
 ### 9. Add Condition to Check DuplicateFound and Take Action
 
