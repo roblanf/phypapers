@@ -63,3 +63,23 @@ I hate power automate, and you may come to hate it too. Here we're going to make
 
 You'll notice that it gets put inside a "For Each" loop. This is expected.
 
+### 6. Extract Title and Link from Each RSS Item
+
+1. **Extract Title:**
+   1. Inside the "For Each" loop, click on "+" and "Add an Action."
+   2. Search for "Compose" in the "Data Operation" category and select it.
+   3. Configure the action:
+      - **Inputs:** Use the following expression to extract the title:
+        ```plaintext
+        xpath(xml(outputs('Compose')), '//title/text()')
+        ```
+        
+2. **Extract Link:**
+   1. Inside the "For Each" loop, click on "+" and "Add an Action."
+   2. Search for "Compose" in the "Data Operation" category and select it.
+   3. Configure the action:
+      - **Inputs:** Use the following expression to extract the link:
+        ```plaintext
+        xpath(xml(outputs('Compose')), '//link/text()')
+        ```
+
