@@ -108,16 +108,39 @@ You'll notice that it gets put inside a "For Each" loop. This is expected.
    2. Search for "Condition" and select it.
    3. Configure the action:
       - **Name:** `IsDuplicate`
-      - **First "Choose a Value":** choose the lightning bolt, scroll down to "List rows present in a table" and choose "Link" 
-      - **Second "Choose a Value":** choose the lightning bolt, and select the "outputs" from "Extract Link" 
+      - **First "Choose a Value":** choose the lightning bolt, scroll down to "List rows present in a table" and choose "Title" 
+      - **Second "Choose a Value":** choose the lightning bolt, and select the "outputs" from "Extract Title" 
    4. In the "True" branch of the condition:
       1. Click on "+" and "Add an Action."
       2. Search for "Variable" and select "Set variable."
       3. Configure the action:
          - **Name:** `DuplicateFound`
          - **Value:** `true`
-      4. Add another action within the "True" branch:
-         - Click on "+" and "Add an Action."
-         - Search for "Terminate" and select it.
-         - Configure the action:
-            - **Status:** `Succeeded`
+
+### 9. Add Condition to Check DuplicateFound and Take Action
+
+1. **Add Condition to Check `DuplicateFound`:**
+   1. After the "Apply to each" loop that checks for duplicates, click on "+" and "Add an Action." (make sure this is outside the loop!!)
+   2. Search for "Condition" and select it.
+   3. Configure the condition:
+      - **First "Choose a Value":** Select the `DuplicateFound` variable.
+      - **Condition:** `is equal to`
+      - **Second "Choose a Value":** `true`
+
+2. In the "False" branch of the condition, click on "+" and "Add an Action."
+   1. Search for "Excel" and select "Add a row into a table."
+   2. Configure the action to add the new row:
+      - **Location:** OneDrive for Business
+      - **Document Library:** OneDrive
+      - **File:** Select the "literature_bot.xlsx" Excel file.
+      - **Table:** Select the table (e.g., "Table1").
+      - Select `Show All` under advanced parameters.
+      - **Title:** Select the output from the "Compose" action that extracts the title.
+      - **Link:** Select the output from the "Compose" action that extracts the link.
+      - **Posted:** Enter `FALSE`.
+
+3. In the "True" branch of the condition, click on "+" and "Add an Action."
+   2. Search for "Variable" and select "Set variable."
+   3. Configure the action:
+      - **Name:** `DuplicateFound`
+      - **Value:** `false`
