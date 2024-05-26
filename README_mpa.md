@@ -55,7 +55,18 @@ I hate power automate, and you may come to hate it too. Here we're going to make
    - **Name:** `NewRSSItems`
    - **Type:** Array
 
-### 5. Process the RSS items
+### 5. Initialize a Variable to Track Duplicates
+
+1. **Initialize a Variable to Track Duplicates:**
+   1. In the flow, click on "+" and "Add an Action."
+   2. Search for "Variable" and select "Initialize variable."
+   3. Configure the action:
+      - **Name:** `DuplicateFound`
+      - **Type:** Boolean
+      - **Value:** `false`
+
+
+### 6. Process the RSS items
 1. In the flow, click on "+" and "Add an Action"
 2. Search for "Compose" in the "Data Operation" category and select it
 3. Configure the action:
@@ -63,7 +74,7 @@ I hate power automate, and you may come to hate it too. Here we're going to make
 
 You'll notice that it gets put inside a "For Each" loop. This is expected.
 
-### 6. Extract Title and Link from Each RSS Item
+### 7. Extract Title and Link from Each RSS Item
 
 1. **Extract Title:**
    1. Inside the "Apply to each" action, click on "+" and "Add an Action."
@@ -89,15 +100,6 @@ You'll notice that it gets put inside a "For Each" loop. This is expected.
         ```
       - Click "Add" to save the expression.
 
-### 7. Initialize a Variable to Track Duplicates
-
-1. **Initialize a Variable to Track Duplicates:**
-   1. In the flow, click on "+" and "Add an Action."
-   2. Search for "Variable" and select "Initialize variable."
-   3. Configure the action:
-      - **Name:** `DuplicateFound`
-      - **Type:** Boolean
-      - **Value:** `false`
 
 ### 8. Check for Duplicate Links
 
