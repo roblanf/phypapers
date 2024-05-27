@@ -82,3 +82,15 @@ This will allow us to trickle out our posts over a ~23 hour period.
    - **Unit:** Minute
 
 This will create a loop to process each item and delay the posts evenly over 23 hours.
+
+### 7. Extract Shortened Link
+1. Inside the "PostToBluesky" loop, add a "Compose" action.
+   - **Name:** `ShortenedLink`
+   - **Inputs:** Click the blue `fx` and post the following code inside the text box:
+     ```json
+     {
+       "expression": "split(items('PostToBluesky')?['link'], '?')[0]"
+     }
+     ```
+
+This will extract the link up to the `?` character, providing a cleaner URL for your posts.
