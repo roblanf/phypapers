@@ -67,7 +67,7 @@ This will allow us to trickle out our posts over a ~23 hour period.
    - **Type:** String
    - **Value:** Enter your Bluesky API password.
 
-### 6. Loop Through and Post All Items
+### 6. Loop Through All Papers
 1. Add an "Apply to each" action.
    - **Value:** use the lightning bolt to select the FilterArray `body`
    - **Name:** `PostToBluesky`
@@ -76,21 +76,31 @@ This will allow us to trickle out our posts over a ~23 hour period.
    - **Name:** `CurrentPaper`
    - **Inputs:** use the lightning bolt to select the PostToBluesky `Current Item`
 
-3. Add a delay between posts to ensure even distribution.
-   - Add a "Delay" action.
-   - **Count:** use the lightning bolt to select the MinutesBetweenPosts `Output`
-   - **Unit:** Minute
+3. Next, add a "Compose" action to get the title.
+   - **Name:** `Title`
+   - **Inputs:** select the blue `fx` and in the code box put `item()?['title']`
 
-This will create a loop to process each item and delay the posts evenly over 23 hours.
+4. Next, add a "Compose" action to strip HTML tags from the title
+   - **Name:** `Title`
+   - **Inputs:** select the blue `fx` and in the code box put `join(xpath(xml(concat('<root>', outputs('Title'), '</root>')), '//text()'), '')`
 
-### 7. Extract Shortened Link
-1. Inside the "PostToBluesky" loop, add a "Compose" action.
-   - **Name:** `ShortenedLink`
-   - **Inputs:** Click the blue `fx` and post the following code inside the text box:
+5. Next, add a "Compose" action to truncate the title if it's longer than 260 characters
+   - **Name:** `Title`
+   - **Inputs:** select the blue `fx` and in the code box put `if(greater(length(outputs('CleanTitle')), 260), substring(outputs('CleanTitle'), 0, 260), outputs('CleanTitle'))`
+
+6. Next, add a "Compose" action to get the link.
+   - **Name:** `Link`
+   - **Inputs:** select the blue `fx` and in the code box put `item()?['primaryLink']`
+
+7. Next, add a "Compose" action to take the crud off the link.
+   - **Name:** `CleanLink`
+   - **Inputs:** select the blue `fx` and in the code box put `split(outputs('Link'), '?')[0]`
+
+
+### 7. Build the Post Content
+1. Inside the "PostToBluesky" loop, add a "Compose" action after the `ShortTitle` and `CleanLink` actions.
+   - **Name:** `PostContent`
+   - **Inputs:**
      ```json
-     {
-       "expression": "split(items('PostToBluesky')?['link'], '?')[0]"
-     }
+     "@{concat(outputs('ShortTitle'),' ',outputs('CleanLink'))}"
      ```
-
-This will extract the link up to the `?` character, providing a cleaner URL for your posts.
