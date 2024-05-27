@@ -10,7 +10,7 @@ Then, we filter out just the new papers from each feed.
 
 Finally, we post the new papers over the next time period, evenly spaced.
 
-# Set up your Power Automate Flow
+# Set up your Power Automate Flow for PubMed
 
 > NB I hate power automate, and you may come to hate it too. It's like programming without access to anything useful. It's worse than the lego drag and drop programming thing that my kids and I use on the iPad. 
 
@@ -217,3 +217,109 @@ Access tokens don't last for long, so we need to refresh it each time we post
 2. Select the blue lightning bolt and choose the `Outputs` of the `MinutesBetweenPosts` variable
 
 This will make the bot wait, so the papers trickle out over ~23 hours.
+
+> If you thought these instructions were long and tiresome, I cannot tell you how much longer and tiresomer they were to figure out!
+
+# Set up your Power Automate Flow for BioRxiv
+
+This should be easier. 
+
+First, save a copy of your first Flow, and call it something different. 
+
+Now let's edit what we need to. The BioRxiv feed pushes only 30 papers at a time, and you can't get papers that match your search. So we'll need to do it a little bit differently - checking every subject feed once a day, removing duplicates, only posting papers with the words we want that appeared in the last day. 
+
+Here are the steps:
+
+### 1. Initialize a List of All Feeds
+
+1. Remove the `RssUrl` variable, and in it's place...
+2. Add an "Initialize variable" action.
+   - **Name:** `FeedURLs`
+   - **Type:** Array
+   - **Value:** 
+     ```json
+     [
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=animal_behavior",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=biochemistry",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=biophysics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=cancer_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=cell_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=developmental_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=ecology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=evolutionary_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=genetics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=genomics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=immunology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=microbiology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=molecular_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=neuroscience",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=paleontology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=pathology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=pharmacology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=physiology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=plant_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=scientific_communication_and_education",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=synthetic_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=systems_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=zoology"
+     ]
+     ```
+
+### 2. Get them all
+
+1. Above the `List all RSS Feed Items`, add an `Initialize Variable`, call it `AllPapers`, choose `Array` and the value should be `[]` (we'll use this to store all the papers we get)
+2. Above the `List all RSS Feed Items`, add an `Apply to Each` and call it `LoopThroughFeeds`
+3. Drag the `List all RSS Feed Items` into the loop
+4. Drag the `FilterArray` into the loop
+5. In the `List all RSS Feed Items`, delte the existing `RSS Feed URL`, click the blue `fx` and add this: `items('LoopThroughFeeds')`
+6. Now we add this to our list of all papers, ignoring duplicates. Inside the `Apply to each` loop, add a "Set variable" action.
+   - **Name:** `AllPapers`
+   - **Value:** 
+     ```json
+     union(variables('OldAllPapers'), body('FilterArray'))
+     ```
+
+OK, our `AllPapers` list now contains all the papers from bioRxiv, now we need to select only those we want.
+
+### 3. Filter papers by search term
+
+We're going to add our list of search terms at the top of the script where it's easy to edit. Then filter the bioRxiv papers lower down.
+
+1. Add an "Initialize variable" action at the top of the script, I put mine just under the list of URLs.
+   - **Name:** `Keywords`
+   - **Type:** Array
+   - **Value:**
+     ```json
+     [
+       "phylogenetics", 
+       "phylogenomics", 
+       "phylogenetic analysis", 
+       "phylogenomic analysis" 
+     ]
+     ```
+     
+2. Directly after the `LoopThroughFeeds` loop, add an "Initialize variable" action.
+   - **Name:** `FilteredPapers`
+   - **Type:** Array
+   - **Value:** `[]`
+
+3. Inside this loop, add another `Apply to each` loop for `AllPapers`.
+   - **Name:** `LoopThroughPapers`
+
+4. Add an `Apply to each` loop for the `Keywords` array.
+   - **Name:** `LoopThroughKeywords`
+
+5. Inside the `LoopThroughKeywords` loop, add a "Condition" action.
+   - **Condition:**
+     - **Left:** (use the blue `fx` to paste this into the box)
+       ```json
+       or(
+          contains(items('LoopThroughPapers')['title'], items('LoopThroughKeywords')), 
+          contains(items('LoopThroughPapers')['summary'], items('LoopThroughKeywords'))
+       )
+       ```
+
+6. If the condition is true, add an "Append to array variable" action.
+   - **Name:** `FilteredPapers`
+   - **Value:** `items('LoopThroughPapers')`
