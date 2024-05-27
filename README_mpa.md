@@ -67,7 +67,42 @@ This will allow us to trickle out our posts over a ~23 hour period.
    - **Type:** String
    - **Value:** Enter your Bluesky API password.
 
-### 6. Loop Through All Papers
+### 6. Authenticate with Bluesky API
+1. Add an "HTTP" action and call it `GetAccessToken`
+   - **Method:** POST
+   - **URI:** `https://bsky.social/xrpc/com.atproto.server.createSession`
+   - **Headers:** 
+     - Content-Type: application/json
+   - **Body:** 
+     ```json
+     {
+       "identifier": "@{variables('BlueskyUsername')}",
+       "password": "@{variables('BlueskyAPIPassword')}"
+     }
+     ```
+
+2. Add a "Parse JSON" action.
+   - **Content:** click the lightning bolt and choose `body` of `GetAccessToken`
+   - **Schema:**
+     ```json
+     {
+       "type": "object",
+       "properties": {
+         "accessJwt": { "type": "string" },
+         "refreshJwt": { "type": "string" }
+       }
+     }
+     ```
+
+3. Add an "Initialize variable" action and call it `AccessToken`
+   - **Type:** String
+   - **Value:** use the lightning bolt and select `Body acessJWT` from Parse JSON
+
+4. Add an "Initialize variable" action and call it `RefreshToken`
+   - **Type:** String
+   - **Value:** use the lightning bolt and select `Body refreshJWT` from Parse JSON
+
+### 7. Loop Through All Papers, extract the basics of each paper
 1. Add an "Apply to each" action.
    - **Value:** use the lightning bolt to select the FilterArray `body`
    - **Name:** `PostToBluesky`
@@ -97,7 +132,7 @@ This will allow us to trickle out our posts over a ~23 hour period.
    - **Inputs:** select the blue `fx` and in the code box put `split(outputs('Link'), '?')[0]`
 
 
-### 7. Build the Post Content
+### 8. Make the text for the post
 1. Inside the "PostToBluesky" loop, add a "Compose" action after the `ShortTitle` and `CleanLink` actions.
    - **Name:** `PostContent`
    - **Inputs:**
@@ -105,16 +140,65 @@ This will allow us to trickle out our posts over a ~23 hour period.
      "@{concat(outputs('ShortTitle'),' ',outputs('CleanLink'))}"
      ```
 
-### 8. Authenticate with Bluesky API
+### 9. Refresh Access Token in Each Loop Iteration
+
+Access tokens don't last for long, so we need to refresh it each time we post
+
 1. Inside the "PostToBluesky" loop, add an "HTTP" action.
+   - **Name:** `RefreshAccessToken`
    - **Method:** POST
-   - **URI:** `https://bsky.social/xrpc/com.atproto.server.createSession`
-   - **Headers:** 
-     - Content-Type: application/json
-   - **Body:** 
+   - **URI:** `https://public.api.bsky.app/xrpc/com.atproto.server.refreshSession`
+   - **Headers:**
+     - Accept: application/json
+     - Authorization: `Bearer @{variables('RefreshToken')}`
+
+2. Add a "Parse JSON" action.
+   - **Name:** `ParseRefreshResponse`
+   - **Content:** click the lightning bolt and choose `body` of `RefreshAccessToken`
+   - **Schema:**
      ```json
      {
-       "identifier": "@{variables('BlueskyUsername')}",
-       "password": "@{variables('BlueskyAPIPassword')}"
+       "type": "object",
+       "properties": {
+         "accessJwt": { "type": "string" }
+       }
      }
      ```
+
+### 10. Post to Bluesky
+
+1. Inside the "PostToBluesky" loop, add an "HTTP" action after the `PostContent` action.
+   - **Name:** `PostToBlueskyAPI`
+   - **Method:** POST
+   - **URI:** `https://bsky.social/xrpc/com.atproto.repo.createRecord`
+   - **Headers:**
+     - Content-Type: application/json
+     - Authorization: `Bearer @{variables('AccessToken')}`
+   - **Body:**
+     ```json
+     {
+       "collection": "app.bsky.feed.post",
+       "repo": "@{variables('BlueskyUsername')}",
+       "record": {
+         "$type": "app.bsky.feed.post",
+         "text": "@{outputs('PostContent')}",
+         "facets": [
+           {
+             "index": {
+               "byteStart": @{add(length(outputs('ShortTitle')), 1)},
+               "byteEnd": @{length(outputs('PostContent'))}
+             },
+             "uri": "@{outputs('CleanLink')}"
+           }
+         ],
+         "createdAt": "@{utcNow()}"
+       }
+     }
+     ```
+3. Add a "Set variable" action to update the access token.
+   - **Name:** `AccessToken`
+   - **Value:** click the lightning bolt and choose `body accessJWT` of `ParseRefreshResponse` 
+
+### Final steps
+
+Relax.
