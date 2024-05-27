@@ -24,14 +24,34 @@ NEVERHTELESS Here we're going to make a 'Flow'. Take a deep breath...
 
 > NB: Pubmed gets updated once every 24 hours, and the rest of this flow assumes you only check it once every 24 hours. If you check it more often you'll get a lot of duplicate posts.
 
-### 2. Add RSS Action to Fetch RSS Feed
-1. In the flow, click on "+" and "Add an Action"
+### 2. Initialise your variables
+
+We'll set the variables that different people will want to change right at the top. This will make it easier to adapt this to different RSS feeds and/or people.
+
+1. Click on "+" and "Add an Action", then search for the "Initialize variable" action and select it. Set it up as follows:
+   - **Name:** `BlueskyUsername` (e.g. `phypapers.bsky.social`)
+   - **Type:** String
+   - **Value:** Enter your Bluesky username.
+
+2. Add another "Initialize variable" action and set it up as follows:
+   - **Name:** `BlueskyAPIPassword` (should be something with alphanumeric characters in the form `xxxx-xxxx-xxxx-xxxx`)
+   - **Type:** String
+   - **Value:** Enter your Bluesky API password.
+
+2. Add another "Initialize variable" action and set it up as follows:
+   - **Name:** `RssURL`
+   - **Type:** String
+   - **Value:** Enter the URL for your RSS feed (e.g. mine is `https://pubmed.ncbi.nlm.nih.gov/rss/search/1pSbSzklLaRDgrBBecLaHXjj_NtDB256CbB-lTk3MQA9gZRkc4/?limit=100&utm_campaign=pubmed-2&fc=20240525000654`)
+
+
+### 3. Add RSS Action to Fetch RSS Feed
+1. Click on "+" and "Add an Action"
 2. Search for "RSS" and select "List all feed items."
 3. Configure the action:
-   - **Feed URL:** Enter the RSS feed URL, e.g. my pubmed search is `https://pubmed.ncbi.nlm.nih.gov/rss/search/1pSbSzklLaRDgrBBecLaHXjj_NtDB256CbB-lTk3MQA9gZRkc4/?limit=100&utm_campaign=pubmed-2&fc=20240525000654`
+   - **Feed URL:** click the lightning bolt and select the variable `RssUrl` which you set earlier
 
-### 3. Only keep papers added to the feed in the last 24 hours
-1. In the flow, click on "+" and "Add an Action."
+### 4. Only keep papers added to the feed in the last 24 hours
+1. Click on "+" and "Add an Action"
 2. Search for "Filter array" and select it.
 3. Configure the action:
    - **Name:** Call it `FilterArray`
@@ -41,9 +61,9 @@ NEVERHTELESS Here we're going to make a 'Flow'. Take a deep breath...
       - Choose `is greater or equal to` for the operator.
       - In the right box, click the `fx` and paste this into the text box: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
 
-OK, now we have our list of new things, and we can go ahead and post to Bluesky.
+This keeps only the papers in the RSS feed that have been added to it in the last 24 hours, which stops us double posting (the feed will always have 100 items, but not all of them will necessarily be new each day).
 
-### 4. Figure out how frequently we should post
+### 5. Figure out how frequently we should post
 
 Let's aim to post everything we've got within 23 hours.
 
@@ -56,16 +76,6 @@ Let's aim to post everything we've got within 23 hours.
 
 This will allow us to trickle out our posts over a ~23 hour period.
 
-### 5. Initialize Variables for Bluesky Credentials
-1. Add a "Initialize variable" action.
-   - **Name:** `BlueskyUsername` (e.g. `phypapers.bsky.social`)
-   - **Type:** String
-   - **Value:** Enter your Bluesky username.
-
-2. Add another "Initialize variable" action.
-   - **Name:** `BlueskyAPIPassword` (should be something with alphanumeric characters in the form `xxxx-xxxx-xxxx-xxxx`)
-   - **Type:** String
-   - **Value:** Enter your Bluesky API password.
 
 ### 6. Authenticate with Bluesky API
 1. Add an "HTTP" action and call it `GetAccessToken`
@@ -101,6 +111,8 @@ This will allow us to trickle out our posts over a ~23 hour period.
 4. Add an "Initialize variable" action and call it `RefreshToken`
    - **Type:** String
    - **Value:** use the lightning bolt and select `Body refreshJWT` from Parse JSON
+
+We need these tokens later to post to Bluesky
 
 ### 7. Loop Through All Papers, extract the basics of each paper
 1. Add an "Apply to each" action.
@@ -199,6 +211,9 @@ Access tokens don't last for long, so we need to refresh it each time we post
    - **Name:** `AccessToken`
    - **Value:** click the lightning bolt and choose `body accessJWT` of `ParseRefreshResponse` 
 
-### Final steps
+### 11. Wait a bit until you post again
 
-Relax.
+1. Add a 'Delay` action
+2. Select the blue lightning bolt and choose the `Outputs` of the `MinutesBetweenPosts` variable
+
+This will make the bot wait, so the papers trickle out over ~23 hours.
