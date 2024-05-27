@@ -104,3 +104,17 @@ This will allow us to trickle out our posts over a ~23 hour period.
      ```json
      "@{concat(outputs('ShortTitle'),' ',outputs('CleanLink'))}"
      ```
+
+### 8. Authenticate with Bluesky API
+1. Inside the "PostToBluesky" loop, add an "HTTP" action.
+   - **Method:** POST
+   - **URI:** `https://bsky.social/xrpc/com.atproto.server.createSession`
+   - **Headers:** 
+     - Content-Type: application/json
+   - **Body:** 
+     ```json
+     {
+       "identifier": "@{variables('BlueskyUsername')}",
+       "password": "@{variables('BlueskyAPIPassword')}"
+     }
+     ```
