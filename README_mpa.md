@@ -1,16 +1,12 @@
 # Microsoft Power Automate instructions
 
-So, dlvr.it has massively constrained the free option. In a hunt for another free option, I thought that Microsoft Power Automate may suffice. Many academics will have access to Microsoft Power Automate through an institutional subscription to Office365, so here's a set of instructions for getting going.
-
-They're a little complicated, but the principle is simple. 
-
 First, we use PowerAutomate to check each RSS feed periodically. 
 
-Then, we filter out just the new papers from each feed.
+Then, we filter out just the new papers, and for bioRxiv those that match our search terms, from each feed and remove any duplicates.
 
 Finally, we post the new papers over the next time period, evenly spaced.
 
-# Set up your Power Automate Flow for PubMed
+# Set up your Power Automate Flow
 
 > NB I hate power automate, and you may come to hate it too. It's like programming without access to anything useful. It's worse than the lego drag and drop programming thing that my kids and I use on the iPad. 
 
@@ -38,46 +34,71 @@ We'll set the variables that different people will want to change right at the t
    - **Type:** String
    - **Value:** Enter your Bluesky API password.
 
-2. Add another "Initialize variable" action and set it up as follows:
-   - **Name:** `RssURL`
-   - **Type:** String
-   - **Value:** Enter the URL for your RSS feed (e.g. mine is `https://pubmed.ncbi.nlm.nih.gov/rss/search/1pSbSzklLaRDgrBBecLaHXjj_NtDB256CbB-lTk3MQA9gZRkc4/?limit=100&utm_campaign=pubmed-2&fc=20240525000654`)
+3. Set up the list of bioRxiv RSS feeds (we keep these separate because we have to manually search for relevant papers):
+   - Add an "Initialize variable" action.
+   - **Name:** `FeedURLs`
+   - **Type:** Array
+   - **Value:** 
+     ```json
+     [
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=animal_behavior",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=biochemistry",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=biophysics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=cancer_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=cell_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=developmental_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=ecology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=evolutionary_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=genetics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=genomics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=immunology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=microbiology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=molecular_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=neuroscience",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=paleontology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=pathology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=pharmacology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=physiology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=plant_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=scientific_communication_and_education",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=synthetic_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=systems_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=zoology"
+     ]
+     ```
+4. Set up the list of search terms (we'll only keep bioRxiv papers that have these terms in the title/abstract):
+   - Add an "Initialize variable" action.
+   - **Name:** `Keywords`
+   - **Type:** Array
+   - **Value:** 
+     ```json
+     [
+      "phylogenetics",
+      "phylogenomics",
+      "phylogenetic analysis",
+      "phylogenomic analysis"
+     ]
+     ```
+
+These are my search terms. Obviously you'll (probably...) want different ones.
+
+5. Set up the list of other RSS feeds (ones where you can get things that already match your search terms):
+   - Add an "Initialize variable" action.
+   - **Name:** `OtherFeedURLs`
+   - **Type:** Array
+   - **Value:** 
+     ```json
+     [
+       "https://pubmed.ncbi.nlm.nih.gov/rss/search/1nMk785v90DQLMmnCRvxhmwnyIvgek4pzThcVTJIYNlwhOfkkg/?limit=100&utm_campaign=pubmed-2&fc=20240527034611",
+       "https://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending"
+     ]
+     ```
+
+Note that you can add as many feeds as you like here, as long as everything in those feeds is what you want to post.
 
 
-### 3. Add RSS Action to Fetch RSS Feed
-1. Click on "+" and "Add an Action"
-2. Search for "RSS" and select "List all feed items."
-3. Configure the action:
-   - **Feed URL:** click the lightning bolt and select the variable `RssUrl` which you set earlier
-
-### 4. Only keep papers added to the feed in the last 24 hours
-1. Click on "+" and "Add an Action"
-2. Search for "Filter array" and select it.
-3. Configure the action:
-   - **Name:** Call it `FilterArray`
-   - **From:** Select `body` from the "List all feed items" action.
-   - **Condition:**
-      - In the left box, click the `fx` and paste this into the text box: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
-      - Choose `is greater or equal to` for the operator.
-      - In the right box, click the `fx` and paste this into the text box: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
-
-This keeps only the papers in the RSS feed that have been added to it in the last 24 hours, which stops us double posting (the feed will always have 100 items, but not all of them will necessarily be new each day).
-
-### 5. Figure out how frequently we should post
-
-Let's aim to post everything we've got within 23 hours.
-
-1. Add a "Compose" action after filtering the RSS feed.
-   - **Name:** `PostCount`
-   - **Inputs:** click the blue `fx` and enter this in the text box: `length(body('FilterArray'))`
-2. Add a "Compose" action after getting the post count.
-   - **Name:** `MinutesBetweenPosts`
-   - **Inputs:** click the blue `fx` and enter this in the text box: `div(1380, outputs('PostCount'))`
-
-This will allow us to trickle out our posts over a ~23 hour period.
-
-
-### 6. Authenticate with Bluesky API
+### 2. Authenticate with Bluesky API
 1. Add an "HTTP" action and call it `GetAccessToken`
    - **Method:** POST
    - **URI:** `https://bsky.social/xrpc/com.atproto.server.createSession`
@@ -113,6 +134,83 @@ This will allow us to trickle out our posts over a ~23 hour period.
    - **Value:** use the lightning bolt and select `Body refreshJWT` from Parse JSON
 
 We need these tokens later to post to Bluesky
+
+### 3. Get the bioRxiv papers and filter them
+
+We only want papers from the last 24 hours, and that match our search terms. 
+
+1. Add an `Initialize Variable`, call it `AllPapers`, choose `Array` and the value should be `[]` (we'll use this to store all the papers we get)
+2. Add an `Initialize Variable`, call it `OldAllPapers`, choose `Array` and the value should be `[]` (we'll use this as a workaround to update our `AllPapers` list one feed at a time; one more reason to hate Power Automate)
+3. Add an `Apply to Each` action and call it `LoopThroughFeeds`
+4. Add a `Scope` action, and call it `FetchAndFilterFeed` (this is so we don't fall over if one of the bioRxiv feeds doesn't work, which is *often*)
+5. Add a `Scope` action, and call it `ErrorHandler`
+   - Go to the settings of the "ErrorHandler" scope, and expand the drop down menu
+   - Check the boxes for "has failed" and "has timed out", and uncheck the others.
+6. Add a `List all RSS Feed Items` action into the `FetchAndFilterFeed` loop
+   - Use the lightning bolt to set the `RSS Feed URL` to `Current Item` from `LoopThroughFeeds` (i.e. we're just getting each URL in turn)
+7. Add a `Filter Array` action, call `FilterArray`, we'll use this to get papers from the last day only (to avoid duplicates day to day):
+   - Use the lightning bolt to set the `From` to `body` from `List all RSS Feed Items`
+   - On the left side of the query, use the blue `fx` to add this code: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
+   - On the right side of the query, use the blue `fx` to add this code: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
+   - Set the operator to `is greater or equal to`
+     
+
+
+###########
+###########
+###########
+
+
+4. Drag the `FilterArray` into the loop
+5. In the `List all RSS Feed Items`, delte the existing `RSS Feed URL`, click the blue `fx` and add this: `items('LoopThroughFeeds')`
+6. Now we add this to our list of all papers, ignoring duplicates. Inside the `Apply to each` loop, add a "Set variable" action.
+   - **Name:** `AllPapers`
+   - **Value:** 
+     ```json
+     union(variables('OldAllPapers'), body('FilterArray'))
+     ```
+
+OK, our `AllPapers` list now contains all the papers from bioRxiv, now we need to select only those we want.
+
+
+
+
+
+
+
+### 3. Add RSS Action to Fetch RSS Feed
+1. Click on "+" and "Add an Action"
+2. Search for "RSS" and select "List all feed items."
+3. Configure the action:
+   - **Feed URL:** click the lightning bolt and select the variable `RssUrl` which you set earlier
+
+### 4. Only keep papers added to the feed in the last 24 hours
+1. Click on "+" and "Add an Action"
+2. Search for "Filter array" and select it.
+3. Configure the action:
+   - **Name:** Call it `FilterArray`
+   - **From:** Select `body` from the "List all feed items" action.
+   - **Condition:**
+      - In the left box, click the `fx` and paste this into the text box: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
+      - Choose `is greater or equal to` for the operator.
+      - In the right box, click the `fx` and paste this into the text box: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
+
+This keeps only the papers in the RSS feed that have been added to it in the last 24 hours, which stops us double posting (the feed will always have 100 items, but not all of them will necessarily be new each day).
+
+### 5. Figure out how frequently we should post
+
+Let's aim to post everything we've got within 23 hours.
+
+1. Add a "Compose" action after filtering the RSS feed.
+   - **Name:** `PostCount`
+   - **Inputs:** click the blue `fx` and enter this in the text box: `length(body('FilterArray'))`
+2. Add a "Compose" action after getting the post count.
+   - **Name:** `MinutesBetweenPosts`
+   - **Inputs:** click the blue `fx` and enter this in the text box: `div(1380, outputs('PostCount'))`
+
+This will allow us to trickle out our posts over a ~23 hour period.
+
+
 
 ### 7. Loop Through All Papers, extract the basics of each paper
 1. Add an "Apply to each" action.
@@ -220,69 +318,38 @@ This will make the bot wait, so the papers trickle out over ~23 hours.
 
 > If you thought these instructions were long and tiresome, I cannot tell you how much longer and tiresomer they were to figure out!
 
-# Set up your Power Automate Flow for BioRxiv
 
-This should be easier. 
 
-First, save a copy of your first Flow, and call it something different. 
 
-Now let's edit what we need to. The BioRxiv feed pushes only 30 papers at a time, and you can't get papers that match your search. So we'll need to do it a little bit differently - checking every subject feed once a day, removing duplicates, only posting papers with the words we want that appeared in the last day. 
 
-Here are the steps:
 
-### 1. Initialize a List of All Feeds
 
-1. Remove the `RssUrl` variable, and in it's place...
-2. Add an "Initialize variable" action.
-   - **Name:** `FeedURLs`
-   - **Type:** Array
-   - **Value:** 
-     ```json
-     [
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=animal_behavior",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=biochemistry",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=biophysics",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=cancer_biology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=cell_biology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=developmental_biology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=ecology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=evolutionary_biology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=genetics",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=genomics",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=immunology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=microbiology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=molecular_biology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=neuroscience",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=paleontology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=pathology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=pharmacology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=physiology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=plant_biology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=scientific_communication_and_education",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=synthetic_biology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=systems_biology",
-       "http://connect.biorxiv.org/biorxiv_xml.php?subject=zoology"
-     ]
-     ```
+### 3. Handle feeds that fail
 
-### 2. Get them all
+Since we're checking a lot of feeds, if one fails everything falls over. So we need to be robust to that. Here's how.
 
-1. Above the `List all RSS Feed Items`, add an `Initialize Variable`, call it `AllPapers`, choose `Array` and the value should be `[]` (we'll use this to store all the papers we get)
-2. Above the `List all RSS Feed Items`, add an `Apply to Each` and call it `LoopThroughFeeds`
-3. Drag the `List all RSS Feed Items` into the loop
-4. Drag the `FilterArray` into the loop
-5. In the `List all RSS Feed Items`, delte the existing `RSS Feed URL`, click the blue `fx` and add this: `items('LoopThroughFeeds')`
-6. Now we add this to our list of all papers, ignoring duplicates. Inside the `Apply to each` loop, add a "Set variable" action.
-   - **Name:** `AllPapers`
-   - **Value:** 
-     ```json
-     union(variables('OldAllPapers'), body('FilterArray'))
-     ```
+1. **Create a Scope for RSS Feed Fetching:**
+   - Add a "Scope" action to contain the RSS feed fetching and filtering actions.
+   - Name this scope "FetchAndFilterFeed".
 
-OK, our `AllPapers` list now contains all the papers from bioRxiv, now we need to select only those we want.
+2. **Move RSS Fetching and Filtering Actions into the Scope:**
+   - Move the "List all RSS Feed Items" and "FilterArray" actions into the "FetchAndFilterFeed" scope. Do this by copy/pasting them and deleting the old ones.
 
-### 3. Filter papers by search term
+3. **Move the other actions into the Scope:**
+   - Move the `UpdateOldAllPapers` and `UpdateAllPapers` actions into the scope. You should be able to drag and drop these.
+   
+5. **Configure Error Handling Scope:**
+   - After the first scope, add another "Scope" action named "ErrorHandler".
+   - Inside the "ErrorHandler" scope, add a "Compose" action to log the error.
+     - **Name:** `ErrorLog`
+     - **Inputs:** `Something went wrong with fetching or filtering the feed.`
+   - Add any other actions you want to take in case of an error, such as sending a notification.
+
+6. **Configure the Run After Settings:**
+   - Go to the settings of the "ErrorHandler" scope, and expand the drop down menu
+   - Check the boxes for "has failed" and "has timed out", and uncheck the others.
+
+### 4. Filter papers by search term
 
 We're going to add our list of search terms at the top of the script where it's easy to edit. Then filter the bioRxiv papers lower down.
 
@@ -315,11 +382,23 @@ We're going to add our list of search terms at the top of the script where it's 
      - **Left:** (use the blue `fx` to paste this into the box)
        ```json
        or(
-          contains(items('LoopThroughPapers')['title'], items('LoopThroughKeywords')), 
-          contains(items('LoopThroughPapers')['summary'], items('LoopThroughKeywords'))
+          contains(toLower(items('LoopThroughPapers')['title']), toLower(items('LoopThroughKeywords'))),
+          contains(toLower(items('LoopThroughPapers')['summary']), toLower(items('LoopThroughKeywords')))
        )
        ```
+     - **Operator:** `is equal to`
+     - **Right:** `true`
 
 6. If the condition is true, add an "Append to array variable" action.
    - **Name:** `FilteredPapers`
    - **Value:** `items('LoopThroughPapers')`
+
+### 5. Count the papers we need to post
+
+1. Edit the PostCount to have the following code: `length(variables('FilteredPapers'))`
+
+
+### 3. Edit the Bluesky posting loop
+
+1. Click on the `PostToBluesky` loop, remove the output, and replace it with `FilteredPapers`
+2.  
