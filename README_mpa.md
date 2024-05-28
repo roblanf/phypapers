@@ -225,29 +225,6 @@ These are the ones with search terms built in, so we don't need to do as much wo
 10. Add a "Compose" action, call it `MinutesBetweenPosts` and use the blue `fx` and enter the code `div(1380, outputs('PostCount'))`. This will allow us to space the posts out over ~23 hours.
 
 
-
-
-###########
-###########
-###########
-
-
-
-### 5. Figure out how frequently we should post
-
-Let's aim to post everything we've got within 23 hours.
-
-1. Add a "Compose" action after filtering the RSS feed.
-   - **Name:** `PostCount`
-   - **Inputs:** click the blue `fx` and enter this in the text box: `length(body('FilterArray'))`
-2. Add a "Compose" action after getting the post count.
-   - **Name:** `MinutesBetweenPosts`
-   - **Inputs:** click the blue `fx` and enter this in the text box: `div(1380, outputs('PostCount'))`
-
-This will allow us to trickle out our posts over a ~23 hour period.
-
-
-
 ### 7. Loop Through All Papers, extract the basics of each paper
 1. Add an "Apply to each" action.
    - **Value:** use the lightning bolt to select the FilterArray `body`
@@ -261,9 +238,9 @@ This will allow us to trickle out our posts over a ~23 hour period.
    - **Name:** `Title`
    - **Inputs:** select the blue `fx` and in the code box put `item()?['title']`
 
-4. Next, add a "Compose" action to strip HTML tags from the title
+4. Next, add a "Compose" action to strip HTML tags and newline characters from the title
    - **Name:** `Title`
-   - **Inputs:** select the blue `fx` and in the code box put `join(xpath(xml(concat('<root>', outputs('Title'), '</root>')), '//text()'), '')`
+   - **Inputs:** select the blue `fx` and in the code box put `replace(join(xpath(xml(concat('<root>', outputs('Title'), '</root>')), '//text()'), ''), '\n', '')`
 
 5. Next, add a "Compose" action to truncate the title if it's longer than 260 characters
    - **Name:** `Title`
