@@ -135,13 +135,13 @@ Note that you can add as many feeds as you like here, as long as everything in t
 
 We need these tokens later to post to Bluesky
 
-### 3. Get the bioRxiv papers and filter them
+### 3. Get the bioRxiv papers from the last 24 hours
 
-We only want papers from the last 24 hours, and that match our search terms. 
+We only want papers from the last 24 hours 
 
 1. Add an `Initialize Variable`, call it `AllPapers`, choose `Array` and the value should be `[]` (we'll use this to store all the papers we get)
 2. Add an `Initialize Variable`, call it `OldAllPapers`, choose `Array` and the value should be `[]` (we'll use this as a workaround to update our `AllPapers` list one feed at a time; one more reason to hate Power Automate)
-3. Add an `Apply to Each` action and call it `LoopThroughFeeds`
+3. Add an `Apply to Each` action and call it `LoopThroughFeeds`, set the input to the `FeedURLs` variable
 4. Add a `Scope` action, and call it `FetchAndFilterFeed` (this is so we don't fall over if one of the bioRxiv feeds doesn't work, which is *often*)
 5. Add a `Scope` action, and call it `ErrorHandler`
    - Go to the settings of the "ErrorHandler" scope, and expand the drop down menu
@@ -153,49 +153,66 @@ We only want papers from the last 24 hours, and that match our search terms.
    - On the left side of the query, use the blue `fx` to add this code: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
    - On the right side of the query, use the blue `fx` to add this code: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
    - Set the operator to `is greater or equal to`
+8. Add a `Set Variable` action, call it `UpdateOldAllPapers`, choose `OldAllPapers` from the dropdown, and use the lightning bolt to set the value to the `AllPapers` variable
+9. Add a `Set Variable` action, call it `UpdateAllPapers`, choose `AllPapers` from the dropdown, and use the blue `fx` to enter the following code: union(variables('OldAllPapers'), body('FilterArray')). This adds the new papers from the feed we're working on to our `AllPapers` list (without duplicates).    
+
+### 4. Filter the bioRxiv papers against our search terms
      
+1. Directly after the `LoopThroughFeeds` loop, add an "Initialize variable" action.
+   - **Name:** `FilteredPapers`
+   - **Type:** Array
+   - **Value:** `[]`
 
+2. Inside this loop, add another `Apply to each` loop for `AllPapers`.
+   - **Name:** `LoopThroughPapers`
 
-###########
-###########
-###########
+3. Add an `Apply to each` loop for the `Keywords` array.
+   - **Name:** `LoopThroughKeywords`
 
-
-4. Drag the `FilterArray` into the loop
-5. In the `List all RSS Feed Items`, delte the existing `RSS Feed URL`, click the blue `fx` and add this: `items('LoopThroughFeeds')`
-6. Now we add this to our list of all papers, ignoring duplicates. Inside the `Apply to each` loop, add a "Set variable" action.
-   - **Name:** `AllPapers`
-   - **Value:** 
-     ```json
-     union(variables('OldAllPapers'), body('FilterArray'))
-     ```
-
-OK, our `AllPapers` list now contains all the papers from bioRxiv, now we need to select only those we want.
-
-
-
-
-
-
-
-### 3. Add RSS Action to Fetch RSS Feed
-1. Click on "+" and "Add an Action"
-2. Search for "RSS" and select "List all feed items."
-3. Configure the action:
-   - **Feed URL:** click the lightning bolt and select the variable `RssUrl` which you set earlier
-
-### 4. Only keep papers added to the feed in the last 24 hours
-1. Click on "+" and "Add an Action"
-2. Search for "Filter array" and select it.
-3. Configure the action:
-   - **Name:** Call it `FilterArray`
-   - **From:** Select `body` from the "List all feed items" action.
+4. Inside the `LoopThroughKeywords` loop, add a "Condition" action.
    - **Condition:**
-      - In the left box, click the `fx` and paste this into the text box: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
-      - Choose `is greater or equal to` for the operator.
-      - In the right box, click the `fx` and paste this into the text box: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
+     - **Left:** (use the blue `fx` to paste this into the box)
+       ```json
+       or(
+          contains(toLower(items('LoopThroughPapers')['title']), toLower(items('LoopThroughKeywords'))),
+          contains(toLower(items('LoopThroughPapers')['summary']), toLower(items('LoopThroughKeywords')))
+       )
+       ```
+     - **Operator:** `is equal to`
+     - **Right:** `true`
 
-This keeps only the papers in the RSS feed that have been added to it in the last 24 hours, which stops us double posting (the feed will always have 100 items, but not all of them will necessarily be new each day).
+5. If the condition is true, add an "Append to array variable" action.
+   - **Name:** `FilteredPapers`
+   - **Value:** `items('LoopThroughPapers')`
+
+### 5. Get the rest of the RSS feeds
+
+These are the ones with search terms built in, so we don't need to do as much work here.
+
+1. Add an `Initialize Variable`, call it `OldFilteredPapers`, choose `Array` and the value should be `[]`
+2. Add an `Apply to Each` action, set it to loop over the `OtherFeedURLs` variable
+3. Add a `Scope` action, and call it `FetchAndFilterFeed2` 
+5. Add a `Scope` action, and call it `ErrorHandler2`
+   - Go to the settings of the "ErrorHandler" scope, and expand the drop down menu
+   - Check the boxes for "has failed" and "has timed out", and uncheck the others.
+6. Add a `List all RSS Feed Items` action into the `FetchAndFilterFeed` loop, call it `List all RSS Feed Items2`
+   - Use the lightning bolt to set the `RSS Feed URL` to `Current Item` from `LoopThroughOtherRSSFeeds` (i.e. we're just getting each URL in turn)
+7. Add a `Filter Array` action, call `FilterArray2`, we'll use this to get papers from the last day only (to avoid duplicates day to day):
+   - Use the lightning bolt to set the `From` to `body` from `List all RSS Feed Items2`
+   - On the left side of the query, use the blue `fx` to add this code: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
+   - On the right side of the query, use the blue `fx` to add this code: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
+   - Set the operator to `is greater or equal to`
+8. Add a `Compose` action, call it `RecentPapers`, use the lightning bolt to choose the 'body' of `FilterArray2`
+9. Add a `Compose` action, call it `AddNewPapersToFilteredPapers`, use the blue `fx` to enter the following code `union(variables('FilteredPapers'), outputs('RecentPapers'))`
+10. Add a `Set Variable` action, call it `SetFilteredPapers`, choose `FilteredPapers` from the dropdown, and use the lightning bolt to choose the `output` of `AddNewPapersToFilteredPapers`. 
+
+### 5. Remove duplicates, and figure out how often to post
+
+###########
+###########
+###########
+
+
 
 ### 5. Figure out how frequently we should post
 
@@ -324,74 +341,7 @@ This will make the bot wait, so the papers trickle out over ~23 hours.
 
 
 
-### 3. Handle feeds that fail
 
-Since we're checking a lot of feeds, if one fails everything falls over. So we need to be robust to that. Here's how.
-
-1. **Create a Scope for RSS Feed Fetching:**
-   - Add a "Scope" action to contain the RSS feed fetching and filtering actions.
-   - Name this scope "FetchAndFilterFeed".
-
-2. **Move RSS Fetching and Filtering Actions into the Scope:**
-   - Move the "List all RSS Feed Items" and "FilterArray" actions into the "FetchAndFilterFeed" scope. Do this by copy/pasting them and deleting the old ones.
-
-3. **Move the other actions into the Scope:**
-   - Move the `UpdateOldAllPapers` and `UpdateAllPapers` actions into the scope. You should be able to drag and drop these.
-   
-5. **Configure Error Handling Scope:**
-   - After the first scope, add another "Scope" action named "ErrorHandler".
-   - Inside the "ErrorHandler" scope, add a "Compose" action to log the error.
-     - **Name:** `ErrorLog`
-     - **Inputs:** `Something went wrong with fetching or filtering the feed.`
-   - Add any other actions you want to take in case of an error, such as sending a notification.
-
-6. **Configure the Run After Settings:**
-   - Go to the settings of the "ErrorHandler" scope, and expand the drop down menu
-   - Check the boxes for "has failed" and "has timed out", and uncheck the others.
-
-### 4. Filter papers by search term
-
-We're going to add our list of search terms at the top of the script where it's easy to edit. Then filter the bioRxiv papers lower down.
-
-1. Add an "Initialize variable" action at the top of the script, I put mine just under the list of URLs.
-   - **Name:** `Keywords`
-   - **Type:** Array
-   - **Value:**
-     ```json
-     [
-       "phylogenetics", 
-       "phylogenomics", 
-       "phylogenetic analysis", 
-       "phylogenomic analysis" 
-     ]
-     ```
-     
-2. Directly after the `LoopThroughFeeds` loop, add an "Initialize variable" action.
-   - **Name:** `FilteredPapers`
-   - **Type:** Array
-   - **Value:** `[]`
-
-3. Inside this loop, add another `Apply to each` loop for `AllPapers`.
-   - **Name:** `LoopThroughPapers`
-
-4. Add an `Apply to each` loop for the `Keywords` array.
-   - **Name:** `LoopThroughKeywords`
-
-5. Inside the `LoopThroughKeywords` loop, add a "Condition" action.
-   - **Condition:**
-     - **Left:** (use the blue `fx` to paste this into the box)
-       ```json
-       or(
-          contains(toLower(items('LoopThroughPapers')['title']), toLower(items('LoopThroughKeywords'))),
-          contains(toLower(items('LoopThroughPapers')['summary']), toLower(items('LoopThroughKeywords')))
-       )
-       ```
-     - **Operator:** `is equal to`
-     - **Right:** `true`
-
-6. If the condition is true, add an "Append to array variable" action.
-   - **Name:** `FilteredPapers`
-   - **Value:** `items('LoopThroughPapers')`
 
 ### 5. Count the papers we need to post
 
