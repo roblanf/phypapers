@@ -215,14 +215,26 @@ These are the ones with search terms built in, so we don't need to do as much wo
 5. Now we'll generate some random keys. First Add an `Apply to each` loop to iterate over `FilteredPapers`. Call it `AssignRandomKeys` and use the lightning bolt to set the Value to `FilteredPapers`
 6. Inside the loop, add a "Compose" action to generate a random number for each paper. Call it `RandomKey` and use the blue `fx` to set the code to `rand(0, 1000000)`
 7. Add an "Append to array variable" action inside the loop to build a new array with random keys. Call it `PapersWithRandomKeys`, and use the blue `fx` to copy the following code into the box:
-       ```json
-      addProperty(items('AssignRandomKeys'), 'key', outputs('RandomKey'))
-       ```
+
+```json
+   {
+     "paper": @{items('AssignRandomKeys')},
+     "key": @{outputs('RandomKey')}
+   }
+```
+
 8. Outside the loop, add a "Compose" action to sort the array based on the random keys. Call it `SortedPapers`, and use the blue `fx` to add the code: `sort(variables('PapersWithRandomKeys'), 'key')`
-7. Add a  "Compose" action to extract the sorted papers from the sorted array. Call it `RandomizedFilteredPapers` and use the blue `fx` to enter the code: `select(outputs('SortedPapers'), 'paper')`
-8. Add an "Initialise Variable" action to put the sorted papers in a variable. Call it `PapersToPost` and use the lightning bolt to select the output of the `RandomizedFilteredPapers` action.
-9. Add a "Compose" action, call it `PostCount`, and use the blue `fx` to enter teh code `length(variables('FilteredPapers'))`
-10. Add a "Compose" action, call it `MinutesBetweenPosts` and use the blue `fx` and enter the code `div(1380, outputs('PostCount'))`. This will allow us to space the posts out over ~23 hours.
+
+9. Now we extract the randomised papers. Add a "Select" action with the following properties:
+     - **From:** `outputs('SortedPapers')`
+     - **Map:** Leave the map empty to directly select the `paper` property.
+       ```json
+       item()['paper']
+       ``
+
+10. Add an "Initialise Variable" action to put the sorted papers in a variable. Call it `PapersToPost` and use the lightning bolt to select the output of the `RandomizedFilteredPapers` action.
+11. Add a "Compose" action, call it `PostCount`, and use the blue `fx` to enter teh code `length(variables('FilteredPapers'))`
+12. Add a "Compose" action, call it `MinutesBetweenPosts` and use the blue `fx` and enter the code `div(1380, outputs('PostCount'))`. This will allow us to space the posts out over ~23 hours.
 
 
 ### 7. Loop Through All Papers, extract the basics of each paper
