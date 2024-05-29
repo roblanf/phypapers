@@ -315,8 +315,8 @@ Access tokens don't last for long, so we need to refresh it each time we post
          "facets": [
            {
              "index": {
-               "byteStart": @{sub(outputs('GetPostLength`, outputs('GetLinkLength')))},
-               "byteEnd": @{(outputs('GetPostLength`))}
+               "byteStart": "@{sub(outputs('GetPostLength'), outputs('GetLinkLength'))}",
+               "byteEnd": "@{outputs('GetPostLength')}"
              },
              "uri": "@{outputs('CleanLink')}"
            }
