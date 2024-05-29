@@ -229,8 +229,26 @@ These are the ones with search terms built in, so we don't need to do as much wo
 
 4. Next, add a "Compose" action to strip HTML tags and newline characters from the title
    - **Name:** `Title`
-   - **Inputs:** select the blue `fx` and in the code box put `replace(join(xpath(xml(concat('<root>', outputs('Title'), '</root>')), '//text()'), ''), '\n', '')`
-
+   - **Inputs:** select the blue `fx` and in the code box put the following code:
+```json
+replace(
+    join(
+        xpath(
+            xml(
+                concat(
+                    '<root>',
+                    replace(replace(replace(variables('title'), '&', '&amp;'), '<', '&lt;'), '>', '&gt;'),
+                    '</root>'
+                )
+            ),
+            '//text()'
+        ),
+        ''
+    ),
+    '\n',
+    ''
+)
+```
 5. Next, add a "Compose" action to truncate the title if it's longer than 260 characters
    - **Name:** `Title`
    - **Inputs:** select the blue `fx` and in the code box put `if(greater(length(outputs('CleanTitle')), 260), substring(outputs('CleanTitle'), 0, 260), outputs('CleanTitle'))`
