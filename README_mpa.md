@@ -316,7 +316,7 @@ Access tokens don't last for long, so we need to refresh it each time we post
            {
              "index": {
                "byteStart": @{sub(outputs('GetPostLength`, outputs('GetLinkLength')))},
-               "byteEnd": @{length(outputs('GetPostLength`))}
+               "byteEnd": @{(outputs('GetPostLength`))}
              },
              "uri": "@{outputs('CleanLink')}"
            }
