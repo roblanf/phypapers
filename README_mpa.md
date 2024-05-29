@@ -237,7 +237,7 @@ replace(
             xml(
                 concat(
                     '<root>',
-                    replace(replace(replace(variables('title'), '&', '&amp;'), '<', '&lt;'), '>', '&gt;'),
+                    replace(replace(replace(outputs('Title'), '&', '&amp;'), '<', '&lt;'), '>', '&gt;'),
                     '</root>'
                 )
             ),
