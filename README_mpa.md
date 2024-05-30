@@ -41,7 +41,7 @@ We'll set the variables that different people will want to change right at the t
    - **Value:** 
      ```json
      [
-       "https://ecoevorxiv.org/rss/preprints",
+       "https://ecoevorxiv.org/rss/preprints/",
        "http://connect.biorxiv.org/biorxiv_xml.php?subject=animal_behavior",
        "http://connect.biorxiv.org/biorxiv_xml.php?subject=biochemistry",
        "http://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics",
