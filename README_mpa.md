@@ -34,13 +34,14 @@ We'll set the variables that different people will want to change right at the t
    - **Type:** String
    - **Value:** Enter your Bluesky API password.
 
-3. Set up the list of bioRxiv RSS feeds (we keep these separate because we have to manually search for relevant papers):
+3. Set up the list of RSS feeds that we have to manually search for relevant papers:
    - Add an "Initialize variable" action.
    - **Name:** `FeedURLs`
    - **Type:** Array
    - **Value:** 
      ```json
      [
+       "https://ecoevorxiv.org/rss/preprints",
        "http://connect.biorxiv.org/biorxiv_xml.php?subject=animal_behavior",
        "http://connect.biorxiv.org/biorxiv_xml.php?subject=biochemistry",
        "http://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics",
@@ -83,17 +84,26 @@ We'll set the variables that different people will want to change right at the t
 
 These are my search terms. Obviously you'll (probably...) want different ones.
 
-5. Set up the list of other RSS feeds (ones where you can get things that already match your search terms):
+5. Set up the list of other RSS feeds (ones where you can get things that already match your search terms). I combine a bunch of different pubmed searches, and two from arXiv. Don't worry, we remove duplicates later.
    - Add an "Initialize variable" action.
    - **Name:** `OtherFeedURLs`
    - **Type:** Array
    - **Value:** 
      ```json
      [
-       "https://pubmed.ncbi.nlm.nih.gov/rss/search/1nMk785v90DQLMmnCRvxhmwnyIvgek4pzThcVTJIYNlwhOfkkg/?limit=100&utm_campaign=pubmed-2&fc=20240527034611",
-       "https://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending"
-     ]
-     ```
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1tYbWOIP0tIVreX9rPCvdGmmbxHJobuBntOy3VyMFivsPJcEG1/?limit=100&utm_campaign=pubmed-2&fc=20240528181849",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1bUrbZONKdKY6mFb4tOeokyXplUngAStuFKAcG88ZfRCNqFE5a/?limit=100&utm_campaign=pubmed-2&fc=20240528181921",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1T5FW5K6kI71ia_6eneQzMtEXpGBLaOr06kN1qxSU80qPUWQcW/?limit=100&utm_campaign=pubmed-2&fc=20240528182102",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1-ONS2P_EKb8HyuP5cSNsVIPVmKKl4rbk16StHDuvXiZWQv9Em/?limit=100&utm_campaign=pubmed-2&fc=20240528182114",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1bAXfGTh08tVkaeuklkzsn7cdc7iJJPE6uvrK1L3guOpfhwkF_/?limit=100&utm_campaign=pubmed-2&fc=20240528182223",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1TyHVUJDxNJTq_goUvgFwCZllkgW6UrIpAskwDT-8mQJ3bn9cD/?limit=100&utm_campaign=pubmed-2&fc=20240528182242",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1NwSQ1kPYoZ_BGXTxnE9MqKYXgYR6mL9HahsJL_YZ-77lpmspk/?limit=100&utm_campaign=pubmed-2&fc=20240528182259",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1DSoZAVEXfx-7I2bn7qqJUrjCjP9uo4KuCG4G0VbH3DyAAL9Su/?limit=100&utm_campaign=pubmed-2&fc=20240528182329",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1bYz7DSbRS5oPC2jrkUeb9exioZTLpMlGljCvk088lBI7qagvL/?limit=100&utm_campaign=pubmed-2&fc=20240528182432",
+        "https://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending",
+        "https://export.arxiv.org/api/query?search_query=all:%22ancestral%20recombination%20graph%22&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending"
+      ]     
+      ```
 
 Note that you can add as many feeds as you like here, as long as everything in those feeds is what you want to post.
 
