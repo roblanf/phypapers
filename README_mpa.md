@@ -306,25 +306,29 @@ Access tokens don't last for long, so we need to refresh it each time we post
      - Authorization: `Bearer @{variables('AccessToken')}`
    - **Body:**
      ```json
-     {
-       "collection": "app.bsky.feed.post",
-       "repo": "@{variables('BlueskyUsername')}",
-       "record": {
-         "$type": "app.bsky.feed.post",
-         "text": "@{outputs('PostContent')}",
-         "facets": [
-           {
-             "index": {
-               "byteStart": @{sub(outputs('GetPostLength'), outputs('GetLinkLength'))},
-               "byteEnd": @{outputs('GetPostLength')}
-             },
-             "uri": "@{outputs('CleanLink')}"
-           }
-         ],
-         "createdAt": "@{utcNow()}"
-       }
-     }
-     ```
+{
+  "collection": "app.bsky.feed.post",
+  "repo": "@{variables('BlueskyUsername')}",
+  "record": {
+    "$type": "app.bsky.feed.post",
+    "text": "@{outputs('PostContent')}",
+    "facets": [
+      {
+        "index": {
+          "byteStart": @{sub(outputs('GetPostLength'), outputs('GetLinkLength'))},
+          "byteEnd": @{outputs('GetPostLength')}
+        },
+        "features": [
+          {
+            "$type": "app.bsky.richtext.facet#link",
+            "uri": "@{outputs('CleanLink')}"
+          }
+        ]
+      }
+    ],
+    "createdAt": "@{utcNow()}"
+  }
+}     ```
 3. Add a "Set variable" action to update the access token.
    - **Name:** `AccessToken`
    - **Value:** click the lightning bolt and choose `body accessJWT` of `ParseRefreshResponse` 
