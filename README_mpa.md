@@ -1,12 +1,8 @@
 # Microsoft Power Automate instructions
 
-So, dlvr.it has massively constrained the free option. In a hunt for another free option, I thought that Microsoft Power Automate may suffice. Many academics will have access to Microsoft Power Automate through an institutional subscription to Office365, so here's a set of instructions for getting going.
-
-They're a little complicated, but the principle is simple. 
-
 First, we use PowerAutomate to check each RSS feed periodically. 
 
-Then, we filter out just the new papers from each feed.
+Then, we filter out just the new papers, and for bioRxiv those that match our search terms, from each feed and remove any duplicates.
 
 Finally, we post the new papers over the next time period, evenly spaced.
 
@@ -38,46 +34,81 @@ We'll set the variables that different people will want to change right at the t
    - **Type:** String
    - **Value:** Enter your Bluesky API password.
 
-2. Add another "Initialize variable" action and set it up as follows:
-   - **Name:** `RssURL`
-   - **Type:** String
-   - **Value:** Enter the URL for your RSS feed (e.g. mine is `https://pubmed.ncbi.nlm.nih.gov/rss/search/1pSbSzklLaRDgrBBecLaHXjj_NtDB256CbB-lTk3MQA9gZRkc4/?limit=100&utm_campaign=pubmed-2&fc=20240525000654`)
+3. Set up the list of RSS feeds that we have to manually search for relevant papers:
+   - Add an "Initialize variable" action.
+   - **Name:** `FeedURLs`
+   - **Type:** Array
+   - **Value:** 
+     ```json
+     [
+       "https://ecoevorxiv.org/rss/preprints/",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=animal_behavior",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=biochemistry",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=biophysics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=cancer_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=cell_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=developmental_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=ecology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=evolutionary_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=genetics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=genomics",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=immunology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=microbiology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=molecular_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=neuroscience",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=paleontology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=pathology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=pharmacology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=physiology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=plant_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=scientific_communication_and_education",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=synthetic_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=systems_biology",
+       "http://connect.biorxiv.org/biorxiv_xml.php?subject=zoology"
+     ]
+     ```
+4. Set up the list of search terms (we'll only keep bioRxiv papers that have these terms in the title/abstract):
+   - Add an "Initialize variable" action.
+   - **Name:** `Keywords`
+   - **Type:** Array
+   - **Value:** 
+     ```json
+     [
+      "phylogenetics",
+      "phylogenomics",
+      "phylogenetic analysis",
+      "phylogenomic analysis"
+     ]
+     ```
+
+These are my search terms. Obviously you'll (probably...) want different ones.
+
+5. Set up the list of other RSS feeds (ones where you can get things that already match your search terms). I combine a bunch of different pubmed searches, and two from arXiv. Don't worry, we remove duplicates later.
+   - Add an "Initialize variable" action.
+   - **Name:** `OtherFeedURLs`
+   - **Type:** Array
+   - **Value:** 
+     ```json
+     [
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1tYbWOIP0tIVreX9rPCvdGmmbxHJobuBntOy3VyMFivsPJcEG1/?limit=100&utm_campaign=pubmed-2&fc=20240528181849",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1bUrbZONKdKY6mFb4tOeokyXplUngAStuFKAcG88ZfRCNqFE5a/?limit=100&utm_campaign=pubmed-2&fc=20240528181921",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1T5FW5K6kI71ia_6eneQzMtEXpGBLaOr06kN1qxSU80qPUWQcW/?limit=100&utm_campaign=pubmed-2&fc=20240528182102",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1-ONS2P_EKb8HyuP5cSNsVIPVmKKl4rbk16StHDuvXiZWQv9Em/?limit=100&utm_campaign=pubmed-2&fc=20240528182114",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1bAXfGTh08tVkaeuklkzsn7cdc7iJJPE6uvrK1L3guOpfhwkF_/?limit=100&utm_campaign=pubmed-2&fc=20240528182223",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1TyHVUJDxNJTq_goUvgFwCZllkgW6UrIpAskwDT-8mQJ3bn9cD/?limit=100&utm_campaign=pubmed-2&fc=20240528182242",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1NwSQ1kPYoZ_BGXTxnE9MqKYXgYR6mL9HahsJL_YZ-77lpmspk/?limit=100&utm_campaign=pubmed-2&fc=20240528182259",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1DSoZAVEXfx-7I2bn7qqJUrjCjP9uo4KuCG4G0VbH3DyAAL9Su/?limit=100&utm_campaign=pubmed-2&fc=20240528182329",
+        "https://pubmed.ncbi.nlm.nih.gov/rss/search/1bYz7DSbRS5oPC2jrkUeb9exioZTLpMlGljCvk088lBI7qagvL/?limit=100&utm_campaign=pubmed-2&fc=20240528182432",
+        "https://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending",
+        "https://export.arxiv.org/api/query?search_query=all:%22ancestral%20recombination%20graph%22&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending"
+      ]     
+      ```
+
+Note that you can add as many feeds as you like here, as long as everything in those feeds is what you want to post.
 
 
-### 3. Add RSS Action to Fetch RSS Feed
-1. Click on "+" and "Add an Action"
-2. Search for "RSS" and select "List all feed items."
-3. Configure the action:
-   - **Feed URL:** click the lightning bolt and select the variable `RssUrl` which you set earlier
-
-### 4. Only keep papers added to the feed in the last 24 hours
-1. Click on "+" and "Add an Action"
-2. Search for "Filter array" and select it.
-3. Configure the action:
-   - **Name:** Call it `FilterArray`
-   - **From:** Select `body` from the "List all feed items" action.
-   - **Condition:**
-      - In the left box, click the `fx` and paste this into the text box: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
-      - Choose `is greater or equal to` for the operator.
-      - In the right box, click the `fx` and paste this into the text box: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
-
-This keeps only the papers in the RSS feed that have been added to it in the last 24 hours, which stops us double posting (the feed will always have 100 items, but not all of them will necessarily be new each day).
-
-### 5. Figure out how frequently we should post
-
-Let's aim to post everything we've got within 23 hours.
-
-1. Add a "Compose" action after filtering the RSS feed.
-   - **Name:** `PostCount`
-   - **Inputs:** click the blue `fx` and enter this in the text box: `length(body('FilterArray'))`
-2. Add a "Compose" action after getting the post count.
-   - **Name:** `MinutesBetweenPosts`
-   - **Inputs:** click the blue `fx` and enter this in the text box: `div(1380, outputs('PostCount'))`
-
-This will allow us to trickle out our posts over a ~23 hour period.
-
-
-### 6. Authenticate with Bluesky API
+### 2. Authenticate with Bluesky API
 1. Add an "HTTP" action and call it `GetAccessToken`
    - **Method:** POST
    - **URI:** `https://bsky.social/xrpc/com.atproto.server.createSession`
@@ -114,6 +145,85 @@ This will allow us to trickle out our posts over a ~23 hour period.
 
 We need these tokens later to post to Bluesky
 
+### 3. Get the bioRxiv papers from the last 24 hours
+
+We only want papers from the last 24 hours 
+
+1. Add an `Initialize Variable`, call it `AllPapers`, choose `Array` and the value should be `[]` (we'll use this to store all the papers we get)
+2. Add an `Initialize Variable`, call it `OldAllPapers`, choose `Array` and the value should be `[]` (we'll use this as a workaround to update our `AllPapers` list one feed at a time; one more reason to hate Power Automate)
+3. Add an `Apply to Each` action and call it `LoopThroughFeeds`, set the input to the `FeedURLs` variable
+4. Add a `Scope` action, and call it `FetchAndFilterFeed` (this is so we don't fall over if one of the bioRxiv feeds doesn't work, which is *often*)
+5. Add a `Scope` action, and call it `ErrorHandler`
+   - Go to the settings of the "ErrorHandler" scope, and expand the drop down menu
+   - Check the boxes for "has failed" and "has timed out", and uncheck the others.
+6. Add a `List all RSS Feed Items` action into the `FetchAndFilterFeed` loop
+   - Use the lightning bolt to set the `RSS Feed URL` to `Current Item` from `LoopThroughFeeds` (i.e. we're just getting each URL in turn)
+7. Add a `Filter Array` action, call `FilterArray`, we'll use this to get papers from the last day only (to avoid duplicates day to day):
+   - Use the lightning bolt to set the `From` to `body` from `List all RSS Feed Items`
+   - On the left side of the query, use the blue `fx` to add this code: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
+   - On the right side of the query, use the blue `fx` to add this code: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
+   - Set the operator to `is greater or equal to`
+8. Add a `Set Variable` action, call it `UpdateOldAllPapers`, choose `OldAllPapers` from the dropdown, and use the lightning bolt to set the value to the `AllPapers` variable
+9. Add a `Set Variable` action, call it `UpdateAllPapers`, choose `AllPapers` from the dropdown, and use the blue `fx` to enter the following code: union(variables('OldAllPapers'), body('FilterArray')). This adds the new papers from the feed we're working on to our `AllPapers` list (without duplicates).    
+
+### 4. Filter the bioRxiv papers against our search terms
+     
+1. Directly after the `LoopThroughFeeds` loop, add an "Initialize variable" action.
+   - **Name:** `FilteredPapers`
+   - **Type:** Array
+   - **Value:** `[]`
+
+2. Inside this loop, add another `Apply to each` loop for `AllPapers`.
+   - **Name:** `LoopThroughPapers`
+
+3. Add an `Apply to each` loop for the `Keywords` array.
+   - **Name:** `LoopThroughKeywords`
+
+4. Inside the `LoopThroughKeywords` loop, add a "Condition" action.
+   - **Condition:**
+     - **Left:** (use the blue `fx` to paste this into the box)
+       ```json
+       or(
+          contains(toLower(items('LoopThroughPapers')['title']), toLower(items('LoopThroughKeywords'))),
+          contains(toLower(items('LoopThroughPapers')['summary']), toLower(items('LoopThroughKeywords')))
+       )
+       ```
+     - **Operator:** `is equal to`
+     - **Right:** `true`
+
+5. If the condition is true, add an "Append to array variable" action.
+   - **Name:** `FilteredPapers`
+   - **Value:** `items('LoopThroughPapers')`
+
+### 5. Get the rest of the RSS feeds
+
+These are the ones with search terms built in, so we don't need to do as much work here.
+
+1. Add an `Initialize Variable`, call it `OldFilteredPapers`, choose `Array` and the value should be `[]`
+2. Add an `Apply to Each` action, set it to loop over the `OtherFeedURLs` variable
+3. Add a `Scope` action, and call it `FetchAndFilterFeed2` 
+5. Add a `Scope` action, and call it `ErrorHandler2`
+   - Go to the settings of the "ErrorHandler" scope, and expand the drop down menu
+   - Check the boxes for "has failed" and "has timed out", and uncheck the others.
+6. Add a `List all RSS Feed Items` action into the `FetchAndFilterFeed` loop, call it `List all RSS Feed Items2`
+   - Use the lightning bolt to set the `RSS Feed URL` to `Current Item` from `LoopThroughOtherRSSFeeds` (i.e. we're just getting each URL in turn)
+7. Add a `Filter Array` action, call `FilterArray2`, we'll use this to get papers from the last day only (to avoid duplicates day to day):
+   - Use the lightning bolt to set the `From` to `body` from `List all RSS Feed Items2`
+   - On the left side of the query, use the blue `fx` to add this code: `formatDateTime(item()?['publishDate'], 'yyyy-MM-dd')`
+   - On the right side of the query, use the blue `fx` to add this code: `formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')`
+   - Set the operator to `is greater or equal to`
+8. Add a `Compose` action, call it `RecentPapers`, use the lightning bolt to choose the 'body' of `FilterArray2`
+9. Add a `Compose` action, call it `AddNewPapersToFilteredPapers`, use the blue `fx` to enter the following code `union(variables('FilteredPapers'), outputs('RecentPapers'))`
+10. Add a `Set Variable` action, call it `SetFilteredPapers`, choose `FilteredPapers` from the dropdown, and use the lightning bolt to choose the `output` of `AddNewPapersToFilteredPapers`. 
+
+### 5. Remove duplicates, and figure out how often to post
+
+1. Add a "Compose" action and call it `RemoveDuplicates`. Use the blue `fx` to enter the following code: `union(variables('FilteredPapers'), variables('FilteredPapers'))`
+2. Add a Set Variable Action and call it `Set Filtered Papers`, set the Name to `FilteredPapers`, use the lightning bolt to set the Value to the `output` of `RemoveDuplicates`
+3. Add a "Compose" action, call it `PostCount`, and use the blue `fx` to enter teh code `length(variables('FilteredPapers'))`
+4. Add a "Compose" action, call it `MinutesBetweenPosts` and use the blue `fx` and enter the code `div(1380, outputs('PostCount'))`. This will allow us to space the posts out over ~23 hours.
+
+
 ### 7. Loop Through All Papers, extract the basics of each paper
 1. Add an "Apply to each" action.
    - **Value:** use the lightning bolt to select the FilterArray `body`
@@ -127,10 +237,28 @@ We need these tokens later to post to Bluesky
    - **Name:** `Title`
    - **Inputs:** select the blue `fx` and in the code box put `item()?['title']`
 
-4. Next, add a "Compose" action to strip HTML tags from the title
+4. Next, add a "Compose" action to strip HTML tags and newline characters from the title
    - **Name:** `Title`
-   - **Inputs:** select the blue `fx` and in the code box put `join(xpath(xml(concat('<root>', outputs('Title'), '</root>')), '//text()'), '')`
-
+   - **Inputs:** select the blue `fx` and in the code box put the following code:
+```json
+replace(
+    join(
+        xpath(
+            xml(
+                concat(
+                    '<root>',
+                    replace(replace(replace(outputs('Title'), '&', '&amp;'), '<', '&lt;'), '>', '&gt;'),
+                    '</root>'
+                )
+            ),
+            '//text()'
+        ),
+        ''
+    ),
+    '\n',
+    ''
+)
+```
 5. Next, add a "Compose" action to truncate the title if it's longer than 260 characters
    - **Name:** `Title`
    - **Inputs:** select the blue `fx` and in the code box put `if(greater(length(outputs('CleanTitle')), 260), substring(outputs('CleanTitle'), 0, 260), outputs('CleanTitle'))`
@@ -188,25 +316,30 @@ Access tokens don't last for long, so we need to refresh it each time we post
      - Authorization: `Bearer @{variables('AccessToken')}`
    - **Body:**
      ```json
-     {
-       "collection": "app.bsky.feed.post",
-       "repo": "@{variables('BlueskyUsername')}",
-       "record": {
-         "$type": "app.bsky.feed.post",
-         "text": "@{outputs('PostContent')}",
-         "facets": [
-           {
-             "index": {
-               "byteStart": @{add(length(outputs('ShortTitle')), 1)},
-               "byteEnd": @{length(outputs('PostContent'))}
-             },
-             "uri": "@{outputs('CleanLink')}"
-           }
-         ],
-         "createdAt": "@{utcNow()}"
-       }
-     }
-     ```
+      {
+        "collection": "app.bsky.feed.post",
+        "repo": "@{variables('BlueskyUsername')}",
+        "record": {
+          "$type": "app.bsky.feed.post",
+          "text": "@{outputs('PostContent')}",
+          "facets": [
+            {
+              "index": {
+                "byteStart": @{sub(outputs('GetPostLength'), outputs('GetLinkLength'))},
+                "byteEnd": @{outputs('GetPostLength')}
+              },
+              "features": [
+                {
+                  "$type": "app.bsky.richtext.facet#link",
+                  "uri": "@{outputs('CleanLink')}"
+                }
+              ]
+            }
+          ],
+          "createdAt": "@{utcNow()}"
+        }
+      }     
+      ```
 3. Add a "Set variable" action to update the access token.
    - **Name:** `AccessToken`
    - **Value:** click the lightning bolt and choose `body accessJWT` of `ParseRefreshResponse` 
@@ -217,3 +350,23 @@ Access tokens don't last for long, so we need to refresh it each time we post
 2. Select the blue lightning bolt and choose the `Outputs` of the `MinutesBetweenPosts` variable
 
 This will make the bot wait, so the papers trickle out over ~23 hours.
+
+> If you thought these instructions were long and tiresome, I cannot tell you how much longer and tiresomer they were to figure out!
+
+
+
+
+
+
+
+
+
+### 5. Count the papers we need to post
+
+1. Edit the PostCount to have the following code: `length(variables('FilteredPapers'))`
+
+
+### 3. Edit the Bluesky posting loop
+
+1. Click on the `PostToBluesky` loop, remove the output, and replace it with `FilteredPapers`
+2.  
