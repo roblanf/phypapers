@@ -1,5 +1,6 @@
 # Build a literature bot in three steps
-These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to Bluesky. 
+
+These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to Bluesky. If you use them to build a bot, please post a note in the ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell), and I'll start a csv file with the links. 
 
 > A key pre-requisite is that you'll need an account with Microsoft Power Automate. Many people have that for free through an institutional Office365 subscription. To see if you have a subscription, go to: https://make.powerautomate.com/, and try to log in. Microsoft Power Automate is a horrendous way to build *anything*, but the massive advantage for literature bots is that if you have a subscription, you get free server time. So once your literature bot is running, you're all done.
 
@@ -11,7 +12,17 @@ This repo has some very detailed instructions to make your own literature bot.
 
 > This is a new set of instructions which I've cleaned up substantially, and streamlined for BlueSky. If you're looking for the old instructions, which had notes for Twitter, Tumblr, you can find them [here](https://github.com/roblanf/phypapers/tree/v1-twitter)
 
-## The three basic steps
+## What the literature bot does
+
+I built the literature bot in Microsoft Power Automate. Here's roughly what it does:
+
+1. Run once every 24 hours
+2. Check a lof of RSS feeds for papers that have come out in the last 24 hours
+3. Apply search terms where necessary (i.e. where the RSS contains papers that are not pre-searched, see below)
+4. Remove duplicate papers
+5. Post the papers to your Bluesky account over a 23 hour period, evenly spaced
+
+## The three basic steps to setting it up
 
 ### 1. Set up a Bluesky account
 
@@ -72,7 +83,7 @@ For [phypapers](https://bsky.app/profile/phypapers.bsky.social) I used two RSS f
 
 #### 2.3 RSS feeds which need searching
 
-bioRxiv and EcoEvoRxiv are great for biology preprints. I don't know of a way to get RSS feed with search terms from them though. However, we can get ALL the preprints in an RSS, and filter them later using search terms. For bioRxiv you have two options. You can do the simple thing and just get the single RSS feed with all recent paper:
+bioRxiv and EcoEvoRxiv are great for biology preprints. I don't know of a way to get RSS feed with search terms from them though. However, we can get ALL the preprints in an RSS, and filter them using search terms. For bioRxiv you have two options. You can do the simple thing and just get the single RSS feed with all recent paper:
 
 [http://connect.biorxiv.org/biorxiv_xml.php?subject=all
 ](http://connect.biorxiv.org/biorxiv_xml.php?subject=all
@@ -110,18 +121,63 @@ OR... you can go overboard like me and get each subject category indpendently. T
 ]
 ```
 
+Once you've decided on your list of RSS feeds, you then need some search terms - these will be used to find papers with any matches in the title or abstract. For [phypapers](https://bsky.app/profile/phypapers.bsky.social) I use these:
+
+```
+[
+  "phylogenetic",
+  "phylogenomic",
+  "ancestral recombination graph"
+]
+```
+
 
 ### 3. Set up Power Automate
 
+#### 3.1 Set up your variables
 
 
+First we have to upload the template, which will do all the posting for you:
+
+1. Download the zip file in this repo called `bluesky_literature_bot.zip`, but don't unzip it.
+2. Log into https://make.powerautomate.com/
+3. On the left hand navigation bar, click "My Flows"
+4. Up the top, click 'Import', then 'Import Package (Legacy)'
+5. Upload the `bluesky_literature_bot.zip` file, then click 'Create as new', then the blue 'Save' button
+
+Next you just have to edit a few of the variables at the top of the template:
+
+1. Click `My Flows`
+2. Click `bluesky_literature_bot`, then `Edit` at the top left
+3. Click the purple variable `RssFeedsThatNeedKeywordSearch`, and edit it to include any RSS feeds which are not pre-searched (by default it has all of bioRxiv and EcoEvoRxiv, but you can change this to anything). Note the format is JSON, as in step 2.3 above.
+4. Click the purple `OtherRssFeeds`, and add in all your PubMed and arXiv RSS feeds. I've left a couple in there so you can see the format, but you will need to delete these and replace them (unless you want to mostly duplicate phypapers).
+5. Click on the purple `Keywords` variable, and put in your search terms. As before, I've left mine there so you can see them. (Hint, don't include TOO many - Microsoft Power Automate is terrifyingly slow, I'd say 10 maximum)
+6. Click on the purple `BlueskyUsername` variable and change the bottom part from `YOUR_USERNAME.bsky.social` to your username, e.g. `phypapers.bsky.social` is phypapers'.
+7. Click on the purple `BlueskyAPIPassword` and change the dummy password `xxxx-xxxx-xxxx-xxxx` to yours from step 1 above.
+8. Click `Save` at the top.
+9. Click the `<-` back arrow at the top left
+10. Click `Turn on` at the top.
+
+#### 3.2 Test it
+
+It's a good idea to do a dry run first. To do that, just hit the `Run` button at the top. This will run your literature bot, and as long as it found at least one paper matching your search terms from the last 24 hours, you'll be able to see it posted to your Bluesky account.
+
+If nothing posts, either follow up the errors in Microsoft Flow, or if it says it 'Succeeded' in the 28-day-run-history, then check your RSS feeds. The chances are that there is nothing from the last 24 hours to post. 
+
+#### 3.3 Set the trigger time
+
+Finally, if you want you can set the time that the search happens each day. By default it starts at 10AM AEST, but to change it just:
+
+1. Click `Edit`
+2. Click the blue `Recurrence` variable
+3. Change the `Time zone` and `At These Hours` to what you want. But ONLY use one hour. The system is built to run once every 24 hours, and if you do more than that you'll just get a lot of duplicates.
 
 ### 4. Tweak, revise, repeat
 
-That's it. My best advice now is to make sure you follow and check your own feed regularyl. If it seems like it's posting rubbish, go tweak the RSS feeds. 
+That's it. My best advice now is to make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want.
 
 And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
 ### 5. Let me know about your literature bot
 
-I'd love to know if you built a literature bot with these instructions. If you did, please let me know via email, bluesky, github issues, or whatever. I'll make a list and post it here at some point.
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
