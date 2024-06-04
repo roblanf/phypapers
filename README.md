@@ -1,13 +1,15 @@
 # Build a literature bot in three steps
 These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to Bluesky. 
 
-We'll use the building of [the phypapers bot on Bluesky](https://bsky.app/profile/phypapers.bsky.social) as an example. It takes about 20 minutes.
+> A key pre-requisite is that you'll need an account with Microsoft Power Automate. Many people have that for free through an institutional Office365 subscription. To see if you have a subscription, go to: https://make.powerautomate.com/, and try to log in. Microsoft Power Automate is a horrendous way to build *anything*, but the massive advantage for literature bots is that if you have a subscription, you get free server time. So once your literature bot is running, you're all done.
+
+We'll use the building of [the phypapers bot on Bluesky](https://bsky.app/profile/phypapers.bsky.social) as an example.
 
 Literature bots can be a useful way to keep up with the latest research. Casey Bergman started it all with a Drosophila literature bot called flypapers back when Twitter existed. There are now hundreds similar ones, many built with the instructions below and many of which can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members. The detailed instructions here were originally inspired by [Casey Bergman's blog post](http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/). 
 
 This repo has some very detailed instructions to make your own literature bot. 
 
-> This is a new set of instructions which I've cleaned up substantially, and streamlined for BlueSky. If you're looking for the old instructions, which had notes for Twitter, Tumblr, and things for using Microsoft Flow etc. you can find them [here](https://github.com/roblanf/phypapers/tree/v1-twitter)
+> This is a new set of instructions which I've cleaned up substantially, and streamlined for BlueSky. If you're looking for the old instructions, which had notes for Twitter, Tumblr, you can find them [here](https://github.com/roblanf/phypapers/tree/v1-twitter)
 
 ## The three basic steps
 
@@ -28,9 +30,9 @@ Obviously you need an account to post to. This part gets you set up on Bluesky, 
 
 ### 2. Set up your RSS feeds
 
-Literature bots use [RSS feeds](https://en.wikipedia.org/wiki/RSS) to post papers. The service we use below (dlvr.it) allows three free RSS feeds. You can use any RSS feed you like, but for the purposes of this tutorial I'll show you how to do the three big ones for what I do: pubmed, arxiv, and biorxiv. The general rule though is that you should establish up to three RSS feeds that cover as much of the literature as you possibly can for whatever your literature bot is for. 
+Literature bots use [RSS feeds](https://en.wikipedia.org/wiki/RSS) to post papers. You can use any RSS feed you like, but for the purposes of this tutorial I'll show you how to do the three big ones for what I do: pubmed, arXiv, and bioRxiv. The general rule though is that you should establish RSS feeds that cover as much of the literature as you possibly can for whatever your literature bot is for. 
 
-#### 2.1 Pubmed RSS feed
+#### 2.1 Pubmed RSS feeds
 
 1. Go here: [http://www.ncbi.nlm.nih.gov/pubmed/](http://www.ncbi.nlm.nih.gov/pubmed/)
 2. Type in your favourite search terms remembering that wildcards are useful (e.g. `phylogen*` will match anything starting with `phylogen`, and logical operators can be really good, e.g. you can have `phylogen* OR raxml OR splitstree`.
@@ -41,90 +43,84 @@ Literature bots use [RSS feeds](https://en.wikipedia.org/wiki/RSS) to post paper
 7. Click `Create RSS`
 8. Record the RSS URL somewhere
 
-> NB I recommend writing down somewhere what your search terms were in case you want to tweak them later. I don't know a reliable way of getting them back if you only have the RSS link. Even if you leave the name as the search terms, it gets truncated after not all that much text.
+Create as many RSS feeds as you like from PubMed, and note them down. Why would you create more than one? Because each feed is limited to retreiving 100 papers, so on the off chance that there's a bumper day for your subject (like a special issue coming out), you might miss papers by having one general feed. For [phypapers](https://bsky.app/profile/phypapers.bsky.social) I went totally overboard and made the following list of RSS feeds:
 
+1. [phylogenetics[Title]](https://pubmed.ncbi.nlm.nih.gov/rss/search/1tYbWOIP0tIVreX9rPCvdGmmbxHJobuBntOy3VyMFivsPJcEG1/?limit=100&utm_campaign=pubmed-2&fc=20240528181849)
+2. [phylogenomics[Title]](https://pubmed.ncbi.nlm.nih.gov/rss/search/1bUrbZONKdKY6mFb4tOeokyXplUngAStuFKAcG88ZfRCNqFE5a/?limit=100&utm_campaign=pubmed-2&fc=20240528181921)
+3. [phylogenomic[Title]](https://pubmed.ncbi.nlm.nih.gov/rss/search/1T5FW5K6kI71ia_6eneQzMtEXpGBLaOr06kN1qxSU80qPUWQcW/?limit=100&utm_campaign=pubmed-2&fc=20240528182102)
+4. [phylogenetic[Title]](https://pubmed.ncbi.nlm.nih.gov/rss/search/1-ONS2P_EKb8HyuP5cSNsVIPVmKKl4rbk16StHDuvXiZWQv9Em/?limit=100&utm_campaign=pubmed-2&fc=20240528182114)
+5. [phylogenetics[TitleAbstract]](https://pubmed.ncbi.nlm.nih.gov/rss/search/1bAXfGTh08tVkaeuklkzsn7cdc7iJJPE6uvrK1L3guOpfhwkF_/?limit=100&utm_campaign=pubmed-2&fc=20240528182223)
+6. [phylogenomics[TitleAbstract]](https://pubmed.ncbi.nlm.nih.gov/rss/search/1TyHVUJDxNJTq_goUvgFwCZllkgW6UrIpAskwDT-8mQJ3bn9cD/?limit=100&utm_campaign=pubmed-2&fc=20240528182242)
+7. [phylogenomic analysis[TitleAbstract]](https://pubmed.ncbi.nlm.nih.gov/rss/search/1NwSQ1kPYoZ_BGXTxnE9MqKYXgYR6mL9HahsJL_YZ-77lpmspk/?limit=100&utm_campaign=pubmed-2&fc=20240528182259)
+8. [phylogenetic analysis[TitleAbstract]](https://pubmed.ncbi.nlm.nih.gov/rss/search/1DSoZAVEXfx-7I2bn7qqJUrjCjP9uo4KuCG4G0VbH3DyAAL9Su/?limit=100&utm_campaign=pubmed-2&fc=20240528182329)
+9. [ancestral recombination graph[TitleAbstract]](https://pubmed.ncbi.nlm.nih.gov/rss/search/1bYz7DSbRS5oPC2jrkUeb9exioZTLpMlGljCvk088lBI7qagvL/?limit=100&utm_campaign=pubmed-2&fc=20240528182432)
+
+If you click on them you can see what each one entails (the search terms are near the top). And note that it doesn't matter that these will pick up a lot of duplicate papers.
 
 #### 2.2 arXiv preprints
 
-arXiv has preprints for many subjects, so it's worth considering. Setting up the RSS feed is trivial:
+arXiv has preprints for many subjects, so it's worth considering. Setting up the RSS feed is trivial. All you need to do is edit this URL to include your search term: 
 
-1. Edit this URL to include your search term: 'http://export.arxiv.org/api/query?search_query=all:[YOURSEARCHTERMHERE]&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending', e.g. for this example: 'http://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=10&sortBy=lastUpdatedDate&sortOrder=descending'
+```http://export.arxiv.org/api/query?search_query=all:[YOURSEARCHTERMHERE]&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending```
 
-#### 2.3 bioRxiv preprints
+For [phypapers](https://bsky.app/profile/phypapers.bsky.social) I used two RSS feeds. I include the text of the links below so you can see how they're built
 
-bioRxiv is also great for biology preprints. I don't know of a way to get an RSS feed with search terms in bioRxiv, but we can get ALL the preprints in an RSS, and filter them later using search terms in dlvr.it. So for bioRxiv we just use the following URL:
+1. [phylogen*](https://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending)
+   * `https://export.arxiv.org/api/query?search_query=all:phylogen*&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending`
+2. ["ancestral recombination graph"](https://export.arxiv.org/api/query?search_query=all:%22ancestral%20recombination%20graph%22&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending)
+   * `https://export.arxiv.org/api/query?search_query=all:%22ancestral%20recombination%20graph%22&start=0&max_results=100&sortBy=lastUpdatedDate&sortOrder=descending`
+
+#### 2.3 RSS feeds which need searching
+
+bioRxiv and EcoEvoRxiv are great for biology preprints. I don't know of a way to get RSS feed with search terms from them though. However, we can get ALL the preprints in an RSS, and filter them later using search terms. For bioRxiv you have two options. You can do the simple thing and just get the single RSS feed with all recent paper:
 
 [http://connect.biorxiv.org/biorxiv_xml.php?subject=all
 ](http://connect.biorxiv.org/biorxiv_xml.php?subject=all
 )
 
-### 3. Set up dlvr.it
+OR... you can go overboard like me and get each subject category indpendently. This is probably overkill, but since bioRxiv returns only the last 30 papers, it will help avoid missing anything. Here's the full list in the format you'll need for Microsoft Flow.
 
-#### 3.1 Get started
+```
+[
+  "https://ecoevorxiv.org/rss/preprints/",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=animal_behavior",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=biochemistry",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=biophysics",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=cancer_biology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=cell_biology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=developmental_biology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=ecology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=evolutionary_biology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=genetics",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=genomics",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=immunology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=microbiology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=molecular_biology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=neuroscience",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=paleontology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=pathology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=pharmacology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=physiology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=plant_biology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=scientific_communication_and_education",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=synthetic_biology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=systems_biology",
+  "http://connect.biorxiv.org/biorxiv_xml.php?subject=zoology"
+]
+```
 
-First you need to set up your account and link your first RSS to you Bluesky account
 
-1. Go here: [http://dlvr.it/](http://dlvr.it/)
-2. Follow the steps to sign up for a new account (NB: the same gmail trick that works for twitter works here too...)
-3. CLick the big magnifying glass which says `Feed Search` and paste the RSS feed URL for Pubmed (from step 7 in the pubmed section, above) into the box
-4. Your pubmed feed should appear below the search box, now click the `Connect` box to the right of it
-5. Click the `Post Settings` box when it goes green (you need to wait a few seconds)
-6. Leave the settings as-is for now, and click the green `Connect Socials` box
-7. Select the 'Connect New' and click the Bluesky butterly icon and follow the steps authorise dlvr.it to post to your Bluesky account (you'll need to put in the App password that you set up above)
-6. Click 'Done'
+### 3. Set up Power Automate
 
-#### 3.2 Add your other RSS feeds
 
-Now you can add up to two more RSS feeds. We'll add the arXiv and BioRxiv feeds from above.
 
-1. Go to you dlvr.it homepage, which should be [https://app.dlvrit.com/](https://app.dlvrit.com/)
-2. For each of the RSS feeds you want to add:
-   * Click your literature bot (mine is called `phy_papers`)
-   * Click the `Add Feeds` link (above the current feed and on the right)
-   * Follow the steps
-
-#### 3.3 Tweak the settings for your feeds
-
-Now we want to make sure our feeds behave nicely! This just requires settings a few options for each of them. 
-
-Remmeber to repeat these steps for all of your feeds (by this point you might have three, or more if you are paying for dlvr.it)
-
-1. In your dlvr.it homepage, click your new route (mine's called `phy_papers`)
-2. In the `Feeds` box, click on the cog symbol next to your pubmed feed
-3. Click `Updates` tab, my suggestions for settings are:
-   * Feed update period: 3 hours (that's the quickest you can get for free)
-   * Max items per update period: 10 (this is so you don't flood people's feeds with too many papers at once)
-   * Max items per day: 250 (that's the maximum for a free account)
-   * Trickle: Newest items first
-   * Subscribe to PuSH Updates: off (this stops it posting big PubMed logos with every post)
-4. Click the `Advanced` tab, my suggestions for settings are the defaults except:
-   * Enable photo posting: Off
-5. If you want to add a prefix (or suffix) to each post, you can do that on the `Item Text` tab. For example I like to add the prefix `preprint:` to papers from preprint servers. 
-6. If you have a feed (like bioRxiv) where you couldn't filter the content by search terms, then click the `Filters` tab and add your search terms here. This will keep only the relevant papers from these kinds of feeds. I usually choose all parts of the message, and use the 'any of the terms' box to enter a comma-separated list.
-7. Click 'Save' in the bottom right
-
-> Remember to repeat this for all of your feeds!
-
-#### 3.4 Tweak the settings for your posting
-
-Now you can tweak how dlvr.it makes your feeds look on Bluesky. To do this:
-
-1. In your dlvr.it homepage, click your new route (mine's called `phy_papers`)
-2. Click the cog to the right of your Bluesky account (the bottom box called something like `Sharing to 1 Social`)
-3. My suggestions for settings are:
-   * Post Style: Status Update (makes is clean plain text)
-   * What to post: I usually just choose the title and the URL. This keeps it short and sweet, and allows for rapid scrolling through papers
-4. Slick `Save` at the bottom
 
 ### 4. Tweak, revise, repeat
 
-That's it. My best advice now is to make sure you follow and check your own feed. If it seems like it's posting rubbish, go tweak the search terms. For example, I noticed that the search above, using 'phylogen*' in pubmed gathers all sorts of papers that just happen to have estimated a phylogenetic tree. That's not what I want, since the focus of most of those papers is often nothing to do with phylogenetics. So I revised my searches to be more specific. I now use this:
+That's it. My best advice now is to make sure you follow and check your own feed regularyl. If it seems like it's posting rubbish, go tweak the RSS feeds. 
 
-`phylogenetics OR phylogenomics OR "phylogenetic tree" OR "phylogenetic network" OR "ancestral recombination graph" OR "phylogenetic analysis" OR "phylogenomic analysis" OR "phylogenetic analyses" OR "phylogenomic analyses" OR "phylogenetic methods" OR "phylogenomic methods" OR raxml OR raxml-ng OR IQ-TREE OR IQ-TREE2 OR IQTREE OR IQTREE2 OR mrbayes OR revbayes OR matoptimize OR decenttree OR svdquartets OR splitstree OR phylonet OR decenttree OR (phylogen* AND (BEAST OR tree OR network))`
-
-Long, unwieldy, and probably a lot of redundnacy (who would use raxml but not mention anything about phylogenetics?) but more precisely targeted to my interests, and less likely to fill mine and other people's streams with content we're not interested in.
-
-If you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
 ### 5. Let me know about your literature bot
 
