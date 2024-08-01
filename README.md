@@ -4,23 +4,21 @@ These instructions tell you how to set up a literature bot that automatically po
 
 > A key pre-requisite is that you'll need an account with Microsoft Power Automate. Many people have that for free through an institutional Office365 subscription. To see if you have a subscription, go to: https://make.powerautomate.com/, and try to log in. Microsoft Power Automate is a horrendous way to build *anything*, but the massive advantage for literature bots is that if you have a subscription, you get free server time. So once your literature bot is running, you're all done.
 
-We'll use the building of [the phypapers bot on Bluesky](https://bsky.app/profile/phypapers.bsky.social) as an example.
+Literature bots can be a useful way to keep up with the latest research. Casey Bergman started it all with a _Drosophila_ literature bot called flypapers back when Twitter existed. There are now hundreds similar ones, many of which can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members. The detailed instructions here were originally inspired by [Casey Bergman's blog post](http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/). 
 
-Literature bots can be a useful way to keep up with the latest research. Casey Bergman started it all with a Drosophila literature bot called flypapers back when Twitter existed. There are now hundreds similar ones, many built with the instructions below and many of which can be found on this list: https://twitter.com/caseybergman/lists/literaturebots/members. The detailed instructions here were originally inspired by [Casey Bergman's blog post](http://caseybergman.wordpress.com/2014/02/24/keeping-up-with-the-scientific-literature-using-twitterbots-the-flypapers-experiment/). 
+This repo tells you how to build your own literature bot, using [the phypapers bot on Bluesky](https://bsky.app/profile/phypapers.bsky.social) as an example.
 
-This repo has some very detailed instructions to make your own literature bot. 
+> This is a new set of instructions which I've cleaned up substantially, and streamlined for BlueSky. If you're looking for the old instructions, which had notes for Twitter, you can find them [here](https://github.com/roblanf/phypapers/tree/v1-twitter)
 
-> This is a new set of instructions which I've cleaned up substantially, and streamlined for BlueSky. If you're looking for the old instructions, which had notes for Twitter, Tumblr, you can find them [here](https://github.com/roblanf/phypapers/tree/v1-twitter)
+## Overview
 
-## What the literature bot does
+Here's an overview of what the literature bot does:
 
-I built the literature bot in Microsoft Power Automate. Here's roughly what it does:
-
-1. Run once every 24 hours
-2. Check a lof of RSS feeds for papers that have come out in the last 24 hours
-3. Apply search terms where necessary (i.e. where the RSS contains papers that are not pre-searched, see below)
-4. Remove duplicate papers
-5. Post the papers to your Bluesky account over a 23 hour period, evenly spaced
+1. Runs once every 24 hours
+2. Checks a lot of RSS feeds for papers that have come out in the last 24 hours
+3. Makes sure the papers are relevant (i.e. some places let you _generate_ relevant RSS feeds, but others don't)
+4. Removes duplicate papers
+5. Posts the papers to Bluesky account over a 23 hour period, evenly spaced (this is so I don't flood everyone's feed with 100 papers at once)
 
 ## The three basic steps to setting it up
 
@@ -33,7 +31,7 @@ Obviously you need an account to post to. This part gets you set up on Bluesky, 
 3. Leave the hosting provider as Bluesky Social
 4. Fill out your details to set up your new account:
     * Protip: If you already use your gmail address for your account, you can just append to it to create a new account. E.g. if your personal account is porcelain.crab@gmail.com, you could use porcelain.crab+phypapers@gmail.com (the '+' stays). This helps keep mail separate.
-5. Decide on a handle. Following flypapers' lead, I suggest a short prefix followed immediately by `papers`, e.g. `flypapers`, `phypapers`. This means we all know it when we see a literature bot.
+5. Decide on a handle. Following flypapers' lead, I suggest a short prefix followed immediately by `papers`, e.g. `flypapers`, `phypapers`, etc. This means we all know it when we see a literature bot.
 6. Click on your new profile, go to `Edit Profile`
     * `Username`: I suggest making this `prefix_papers` e.g. `fly_papers` or `phy_papers`. As above, this helps everyone know what's a literature bot
     * `Description`: pretty obvious, but it's always nice to know the human who runs it, so good to put your name there if you want to. It would be great if you could also put a link to these instructions on your literature bot - that way anyone who sees yours can also make their own. On my profile I just wrote: "Make your own literature bot with these instructions: https://github.com/roblanf/phypapers"
