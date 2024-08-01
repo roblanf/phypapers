@@ -1,6 +1,6 @@
 # Build a literature bot in three steps
 
-These instructions tell you how to set up a literature bot that automatically posts papers on particular topics to Bluesky. If you use them to build a bot, please post a note in the ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell), and I'll start a csv file with the links. 
+These instructions tell you how to set up a literature bot that automatically posts papers on whatever you're intersted in to Bluesky. If you use them to build a bot, please post a note in the ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell). 
 
 > A key pre-requisite is that you'll need an account with Microsoft Power Automate. Many people have that for free through an institutional Office365 subscription. To see if you have a subscription, go to: https://make.powerautomate.com/, and try to log in. Microsoft Power Automate is a horrendous way to build *anything*, but the massive advantage for literature bots is that if you have a subscription, you get free server time. So once your literature bot is running, you're all done.
 
@@ -172,12 +172,120 @@ Finally, if you want you can set the time that the search happens each day. By d
 2. Click the blue `Recurrence` variable
 3. Change the `Time zone` and `At These Hours` to what you want. But ONLY use one hour. The system is built to run once every 24 hours, and if you do more than that you'll just get a lot of duplicates.
 
-### 4. Tweak, revise, repeat
+## Once you've got it running...
 
-That's it. My best advice now is to make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want.
+
+### Tweak, revise, repeat
+
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
 
 And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
 
-### 5. Let me know about your literature bot
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
+
+I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
+Make sure you follow and check your own feed regularly. If it seems like it's posting rubbish, go tweak the RSS feeds. Leave it runnning for a week or two before telling too many people, so that you can see that it works like you want, and so when people find it they can see a bunch of good papers too.
+
+And of course, if you find any mistakes or omissions in this document, raise an issue on the github page and I'll fix it.
+
+### Let me know about your literature bot
 
 I'd love to know if you built a literature bot with these instructions. If you did, please let me know via ["Show and tell" of the discussions](https://github.com/roblanf/phypapers/discussions/new?category=show-and-tell)
