@@ -10,6 +10,15 @@ This repo tells you how to build your own literature bot, using [the phypapers b
 
 > This is a new set of instructions which I've cleaned up substantially, and streamlined for BlueSky. If you're looking for the old instructions, which had notes for Twitter, you can find them [here](https://github.com/roblanf/phypapers/tree/v1-twitter)
 
+## Examples
+
+If you just want to see what this is all about, here are some examples I know of.
+
+| Subject | Name | Account |
+|---------|------|---------|
+| Phylogenetics | phy_papers | [@phypapers.bsky.social](https://bsky.app/profile/phypapers.bsky.social) | 
+| Biogeography | biogeo_papers | [@biogeopapers.bsky.social](https://bsky.app/profile/biogeopapers.bsky.social) | 
+
 ## Overview
 
 Here's an overview of what the literature bot does:
