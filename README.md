@@ -151,6 +151,8 @@ First we have to upload the template, which will do all the posting for you:
 3. On the left hand navigation bar, click "My Flows"
 4. Up the top, click 'Import', then 'Import Package (Legacy)'
 5. Upload the `bluesky_literature_bot.zip` file, then click 'Create as new', then the blue 'Save' button
+6. If there are other rows in the "Review Package Content" table beyond the `bluesky_literature_bot`, you have to review those too. For each one, just click the link under the `import setup` column, then follow the instructions and click the blue 'Save' button.
+7. When you've done every row, the 'Import' button at the bottom will turn blue. Click it. Wait for your bot to import.
 
 Next you just have to edit a few of the variables at the top of the template:
 
